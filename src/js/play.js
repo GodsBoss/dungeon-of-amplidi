@@ -1,8 +1,10 @@
 class Play extends Phaser.State {
   create() {
+    const tiles = this.add.group()
+    tiles.classType = Tile
     for(var x = 0; x < boardSize.width; x++) {
       for (var y = 0; y < boardSize.height; y++) {
-        this.add.sprite(x * tileSize.width + 20, y * tileSize.width + 20, Math.random() > 0.5 ? 'tile_path' : 'tile_rock')
+        tiles.create(x * tileSize.width + 20, y * tileSize.width + 20, Math.random() > 0.5 ? 'tile_path' : 'tile_rock')
       }
     }
 
@@ -39,3 +41,9 @@ const maxCards = 5
 
 // maxHeroes is the number of heroes the player has.
 const maxHeroes = 4
+
+class Tile extends Phaser.Sprite {
+  constructor(game, x, y, key, frame) {
+    super(game, x, y, key, frame)
+  }
+}
