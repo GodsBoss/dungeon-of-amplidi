@@ -623,7 +623,9 @@ class GoblinCard extends Card {
 
   use (state, position) {
     const pos = state.board.position(position.x, position.y)
-    state.monsterGroups['goblins'].create(pos.x, pos.y, "sprite_monster_goblin")
+    const goblin = state.monsterGroups['goblins'].create(pos.x, pos.y, "sprite_monster_goblin")
+    goblin.setTarget(position)
+    goblin.setState(state)
     super.use(state, position)
   }
 }
@@ -638,8 +640,30 @@ class DungeonHeart {
 }
 
 class Goblin extends Phaser.Sprite {
-  update () {}
+  update () {
+    if (distance(this, this.state.board.position(this.target.x, this.target.y)) < goblinSpeed) {
+      var possibleTargets = this.state.board.findPassableTiles(this.target)
+      if (possibleTargets.length > 0) {
+        this.setTarget(possibleTargets[random(0, possibleTargets.length - 1)])
+      }
+    } else {
+      const d = diff(this, this.state.board.position(this.target.x, this.target.y))
+      const l = length(d)
+      this.x += goblinSpeed * d.x / l
+      this.y += goblinSpeed * d.y / l
+    }
+  }
+
+  setTarget (target) {
+    this.target = target
+  }
+
+  setState (state) {
+    this.state = state
+  }
 }
+
+const goblinSpeed = 0.025
 
 class Offsets {
   constructor () {
