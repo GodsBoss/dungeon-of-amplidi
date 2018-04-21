@@ -161,6 +161,8 @@ class Party {
   }
 }
 
+const partySpeed = 0.05
+
 class Hero {
   constructor (state, party, index, type) {
     this.party = party
