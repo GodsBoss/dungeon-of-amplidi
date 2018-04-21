@@ -8,6 +8,7 @@ class Preload extends Phaser.State {
       "screen_play",
       "sprite_dungeonheart",
       "tile_path",
+      "tile_overlay",
       "tile_rock",
       "tile_unset",
       "ui_card",
