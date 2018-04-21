@@ -1,5 +1,9 @@
+import { Game } from './game'
+
 window.addEventListener(
   "load",
-  (e) => {},
+  (e) => {
+    (new Game(document.body)).run()
+  },
   false
 )
