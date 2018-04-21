@@ -1,6 +1,6 @@
 class Play extends Phaser.State {
   create() {
-    this.board = new Board(this, boardSize)
+    this.board = new Board(this, boardSize, this.overlayClick.bind(this))
     this.party = new Party(this, maxHeroes)
     this.cards = new Cards(this)
   }
@@ -9,6 +9,10 @@ class Play extends Phaser.State {
     this.party.update()
     this.cards.update()
     this.board.overlay(this.cards.getUseOverlay(this, this.board.fromPointer(this.input)))
+  }
+
+  overlayClick (obj, ptr, stillOver) {
+    this.cards.useCard(this, this.board.fromPointer(this.input))
   }
 }
 
@@ -27,7 +31,7 @@ const maxCards = 5
 const maxHeroes = 4
 
 class Board {
-  constructor(state, size) {
+  constructor(state, size, onOverlayClick) {
     this.size = size
     this.tilesGroup = state.add.group()
     this.tilesGroup.classType = Tile
@@ -43,7 +47,10 @@ class Board {
     for (var x = 0; x < this.size.width; x++) {
       for (var y = 0; y < this.size.height; y++) {
         var overlayPos = this.position(x, y)
-        this.overlays[this.tileIndex(x, y)] = state.add.sprite(overlayPos.x, overlayPos.y, 'tile_overlay')
+        var overlaySprite = state.add.sprite(overlayPos.x, overlayPos.y, 'tile_overlay')
+        overlaySprite.inputEnabled = true
+        overlaySprite.events.onInputUp.add(onOverlayClick)
+        this.overlays[this.tileIndex(x, y)] = overlaySprite
       }
     }
 
@@ -297,6 +304,16 @@ class Cards {
     }
     return this.activeSlot.getUseOverlay(state, position)
   }
+
+  useCard (state, position) {
+    if (!this.activeSlot) {
+      return
+    }
+    if (!this.activeSlot.getUseOverlay(state, position).areAllValid()) {
+      return
+    }
+    this.activeSlot.use(state, position)
+  }
 }
 
 class CardSlot {
@@ -381,6 +398,10 @@ class CardSlot {
   getUseOverlay (state, position) {
     return this.card.getUseOverlay(state, position)
   }
+
+  use (state, position) {
+    this.card.use(state, position)
+  }
 }
 
 class Card {
@@ -415,6 +436,8 @@ class BoardCard extends Card {
     )
     return offsets
   }
+
+  use (state, position) {}
 }
 
 class BoardCardTile {
