@@ -9,4 +9,4 @@ class Preload extends Phaser.State {
   }
 }
 
-export { Preload as State }
+export default { State: Preload }

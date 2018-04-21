@@ -15,4 +15,4 @@ class Bootstrap extends Phaser.State {
   }
 }
 
-export { Bootstrap as State }
+export default { State: Bootstrap }
