@@ -98,13 +98,14 @@ class Party {
 
   update() {
     this.heroes.forEach(
-      (hero) => hero.move(this.position)
+      (hero) => hero.update()
     )
   }
 }
 
 class Hero {
   constructor (state, party, index, type) {
+    this.party = party
     this.life = heroTemplates[type].life()
     this.index = index
     var pos = this.portraitPosition()
@@ -136,6 +137,12 @@ class Hero {
     this.heroSprite.x = x * tileSize.width + 20 - 6
     this.heroSprite.y = y * tileSize.height + 20 - 6
     this.position = { x, y }
+  }
+
+  update () {
+    this.life.tick()
+    this.move(this.party)
+    this.renderHeroLifeValue()
   }
 
   move (target) {
@@ -205,7 +212,7 @@ class Life {
 }
 
 function distance(p1, p2) {
-  return length({ x: p1.x - p2.x, y: p1.y - p2.y })
+  return length(diff(p1, p2))
 }
 
 function diff(p1, p2) {
