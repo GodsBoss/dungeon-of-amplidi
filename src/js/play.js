@@ -210,6 +210,7 @@ class Cards {
     this.slots = []
     for(var i = 0; i < maxCards; i++) {
       this.slots[i] = new CardSlot(state, this, i)
+      this.slots[i].setCard(new BoardCard(state, this.slots[i]))
     }
   }
 
@@ -242,6 +243,10 @@ class CardSlot {
     this.effect.animations.add("inactive", [0], 1, false)
     this.effect.animations.add("hover", [1,2,3], 10, true)
     this.effect.animations.add("active", [4,5,6], 10, true)
+  }
+
+  setCard(card) {
+    this.card = card
   }
 
   update () {
@@ -301,6 +306,27 @@ class CardSlot {
 class Card {
   constructor (slot) {
     this.slot = slot
+  }
+}
+
+class BoardCard extends Card {
+  constructor (state, slot) {
+    super(slot)
+    var maxOffsets = { x: 1, y: 1 }
+    this.tiles = [
+      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 0}, maxOffsets),
+      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 0}, maxOffsets),
+      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 1}, maxOffsets),
+      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 1}, maxOffsets)
+    ]
+  }
+}
+
+class BoardCardTile {
+  constructor (state, slot, type, tileOffset, maxOffset) {
+    var x = slot.x() + tileSize.width * (tileOffset.x - maxOffset.x / 2) + 20
+    var y = slot.y() + tileSize.height * (tileOffset.y - maxOffset.y / 2) + 24
+    this.tile = state.add.sprite(x, y, "tile_" + type)
   }
 }
 
