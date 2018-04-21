@@ -10,7 +10,9 @@ class Preload extends Phaser.State {
       "tile_path",
       "tile_rock",
       "ui_card",
-      "ui_heroframe"
+      "ui_heroframe",
+      "ui_hero_dead",
+      "ui_hero_none"
     ].forEach(
       (key) => this.load.image(key, "gfx/" + key + ".png")
     )
