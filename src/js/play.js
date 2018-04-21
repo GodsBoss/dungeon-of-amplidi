@@ -402,11 +402,20 @@ class CardSlot {
   use (state, position) {
     this.card.use(state, position)
   }
+
+  removeCard() {
+    this.cards.deactivate()
+    this.setState("inactive")
+  }
 }
 
 class Card {
   constructor (slot) {
     this.slot = slot
+  }
+
+  use (state, position) {
+    this.slot.removeCard()
   }
 }
 
@@ -444,6 +453,7 @@ class BoardCard extends Card {
         state.board.setTile(tilePosition.x, tilePosition.y, tile.tile.key)
       }
     )
+    super.use(state, position)
   }
 }
 
