@@ -4,7 +4,7 @@
   "description": "God Game / Dungeon Crawler",
   "scripts": {
     "build": "webpack-cli",
-    "clean": "rm -rf ./dist",
+    "clean": "rm -rf ./dist ./gfx",
     "serve": "webpack-dev-server --port=8000"
   },
   "keywords": [
