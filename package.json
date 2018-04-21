@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "God Game / Dungeon Crawler",
   "scripts": {
-    "build": "webpack-cli"
+    "build": "webpack-cli",
+    "clean": "rm -rf ./dist"
   },
   "keywords": [
     "game"

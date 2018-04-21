@@ -1,4 +1,7 @@
 build:
 	npm run-script build
 
-.PHONY: build
+clean:
+	npm run-script clean
+
+.PHONY: build clean
