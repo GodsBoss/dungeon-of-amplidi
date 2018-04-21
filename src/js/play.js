@@ -141,7 +141,7 @@ class Hero {
 
   update () {
     this.life.tick()
-    this.move(this.party)
+    this.move(this.party.position)
     this.renderHeroLifeValue()
   }
 
