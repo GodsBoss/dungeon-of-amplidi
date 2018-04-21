@@ -222,15 +222,71 @@ class Cards {
 
 class CardSlot {
   constructor (state, index) {
+    this.phaserState = state
     this.index = index
-    var x = tileSize.width * boardSize.width * this.index / maxCards + 20
-    this.bg = state.add.sprite(x, 224, "ui_card")
-    this.inputFrame = state.add.sprite(x, 224, "ui_invisiblecard")
+    this.bg = state.add.sprite(this.x(), this.y(), "ui_card")
+    this.inputFrame = state.add.sprite(this.x(), this.y(), "ui_invisiblecard")
     this.inputFrame.inputEnabled = true
+    this.inputFrame.events.onInputOver.add((obj, ptr) => this.over(obj, ptr))
+    this.inputFrame.events.onInputOut.add((obj, ptr) => this.out(obj, ptr))
+    this.inputFrame.events.onInputUp.add((obj, ptr, stillOver) => this.up(obj, ptr, stillOver))
+    this.state = "inactive"
+    this.effect = state.add.sprite(this.x(), this.y(), "ui_cardfx")
+    this.effect.animations.add("inactive", [0], 1, false)
+    this.effect.animations.add("hover", [1,2,3], 10, true)
+    this.effect.animations.add("active", [4,5,6], 10, true)
   }
 
   update () {
     this.inputFrame.bringToTop()
+  }
+
+  over (obj, ptr) {
+    if (this.isInactive()) {
+      this.setState("hover")
+    }
+  }
+
+  out (obj, ptr) {
+    if (this.isHovered()) {
+      this.setState("inactive")
+    }
+  }
+
+  up (obj, ptr, stillOver) {
+    if (!stillOver) {
+      return
+    }
+    if (this.isActive()) {
+      this.setState("inactive")
+    } else if (this.isHovered()) {
+      this.setState("active")
+    }
+  }
+
+  setState (state) {
+    this.state = state
+    this.effect.animations.play(state)
+  }
+
+  isInactive() {
+    return this.state == "inactive"
+  }
+
+  isHovered() {
+    return this.state == "hover"
+  }
+
+  isActive() {
+    return this.state == "active"
+  }
+
+  x () {
+    return tileSize.width * boardSize.width * this.index / maxCards + 20
+  }
+
+  y () {
+    return 224
   }
 }
 

@@ -34,6 +34,7 @@ class Preload extends Phaser.State {
 
     [
       "ui_cardactive",
+      "ui_cardfx",
       "ui_cardhover"
     ].forEach(
       (key) => this.load.spritesheet(key, "gfx/" + key + ".png", 50, 60)
