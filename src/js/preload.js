@@ -13,6 +13,7 @@ class Preload extends Phaser.State {
       "ui_card",
       "ui_heroframe",
       "ui_herolife",
+      "ui_herolifevalue",
       "ui_hero_cleric",
       "ui_hero_dead",
       "ui_hero_knight",
