@@ -209,7 +209,7 @@ class Cards {
   constructor (state) {
     this.slots = []
     for(var i = 0; i < maxCards; i++) {
-      this.slots[i] = new CardSlot(state, i)
+      this.slots[i] = new CardSlot(state, this, i)
     }
   }
 
@@ -221,7 +221,8 @@ class Cards {
 }
 
 class CardSlot {
-  constructor (state, index) {
+  constructor (state, cards, index) {
+    this.cards = cards
     this.phaserState = state
     this.index = index
     this.bg = state.add.sprite(this.x(), this.y(), "ui_card")
