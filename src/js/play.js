@@ -299,8 +299,8 @@ class CardSlot {
 }
 
 class Card {
-  constructor (index) {
-    this.index = index
+  constructor (slot) {
+    this.slot = slot
   }
 }
 
