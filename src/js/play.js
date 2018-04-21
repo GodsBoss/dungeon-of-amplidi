@@ -59,6 +59,10 @@ class Board {
     return x + y * boardSize.width
   }
 
+  getTile (x, y) {
+    return this.tiles[this.tileIndex(x, y)]
+  }
+
   setTile (x, y, key) {
     this.tiles[this.tileIndex(x, y)].destroy()
     this.addTile(x, y, key)
