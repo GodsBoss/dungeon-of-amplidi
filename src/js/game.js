@@ -5,7 +5,7 @@ import preload from './preload'
 
 class Game {
   constructor (container) {
-    this.phaserGame = new Phaser.Game(800, 600, Phaser.AUTO, container, null, false, false)
+    this.phaserGame = new Phaser.Game(400, 300, Phaser.AUTO, container, null, false, false)
 
     this.phaserGame.state.add("levelselect", new levelselect.State())
     this.phaserGame.state.add("play", new play.State())
