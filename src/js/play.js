@@ -4,6 +4,10 @@ class Play extends Phaser.State {
     this.party = new Party(this, maxHeroes)
     this.cards = new Cards(this)
     this.heart = new DungeonHeart(this)
+    this.monsterGroups = {
+      "goblins": this.add.group()
+    }
+    this.monsterGroups['goblins'].classType = Goblin
     this.monsters = []
   }
 
@@ -614,6 +618,8 @@ class GoblinCard extends Card {
   }
 
   use (state, position) {
+    const pos = state.board.position(position.x, position.y)
+    state.monsterGroups['goblins'].create(pos.x, pos.y, "sprite_monster_goblin")
     super.use(state, position)
   }
 }
@@ -625,6 +631,10 @@ class DungeonHeart {
     const position = phaserState.board.position(gridX, gridY)
     this.sprite = phaserState.add.sprite(position.x, position.y, 'sprite_dungeonheart')
   }
+}
+
+class Goblin extends Phaser.Sprite {
+  update () {}
 }
 
 class Offsets {
