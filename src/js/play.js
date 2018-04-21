@@ -270,11 +270,11 @@ class Life {
 
 class Cards {
   constructor (state) {
-    this.generator = new CardGenerator()
+    this.generator = new CardGenerator(state)
     this.slots = []
     for(var i = 0; i < maxCards; i++) {
       this.slots[i] = new CardSlot(state, this, i)
-      this.slots[i].setCard(this.generator.create(state, this.slots[i]))
+      this.slots[i].setCard(this.generator.create(this.slots[i]))
     }
     this.activeSlot = null
   }
@@ -318,11 +318,15 @@ class Cards {
 }
 
 class CardGenerator {
+  constructor (phaserState) {
+    this.phaserState = phaserState
+  }
+
   /**
   * create creates a card.
   */
-  create(state, slot) {
-    return new BoardCard(state, slot)
+  create(slot) {
+    return new BoardCard(this.phaserState, slot)
   }
 }
 
