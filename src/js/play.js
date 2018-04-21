@@ -2,14 +2,7 @@ class Play extends Phaser.State {
   create() {
     this.board = new Board(this, boardSize)
     this.party = new Party(this, maxHeroes)
-
-    for(var i = 0; i < maxCards; i++) {
-      this.add.sprite(
-        tileSize.width * boardSize.width * i / maxCards + 20,
-        224,
-        "ui_card"
-      )
-    }
+    this.cards = new Cards(this, maxCards)
   }
 
   update() {
@@ -208,6 +201,19 @@ class Life {
 
   none() {
     return this.current == 0
+  }
+}
+
+class Cards {
+  constructor (state, maxCards) {
+    this.cardFrames = []
+    for(var i = 0; i < maxCards; i++) {
+      this.cardFrames[i] = state.add.sprite(
+        tileSize.width * boardSize.width * i / maxCards + 20,
+        224,
+        "ui_card"
+      )
+    }
   }
 }
 
