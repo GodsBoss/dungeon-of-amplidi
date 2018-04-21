@@ -460,7 +460,6 @@ class Card {
   destroy() {
     this.sprites.forEach(
       (sprite) => {
-        console.log(sprite)
         sprite.destroy()
       }
     )
