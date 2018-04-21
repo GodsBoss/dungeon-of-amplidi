@@ -1,6 +1,6 @@
 class Play extends Phaser.State {
   create() {
-    this.board = new Board(this)
+    this.board = new Board(this, boardSize)
 
     for(var i = 0; i < maxCards; i++) {
       this.add.sprite(
@@ -37,26 +37,27 @@ const maxCards = 5
 const maxHeroes = 4
 
 class Board {
-  constructor(state) {
+  constructor(state, size) {
+    this.size = size
     this.tilesGroup = state.add.group()
     this.tilesGroup.classType = Tile
     this.tiles = []
 
-    for(var x = 0; x < boardSize.width; x++) {
-      for (var y = 0; y < boardSize.height; y++) {
+    for(var x = 0; x < this.size.width; x++) {
+      for (var y = 0; y < this.size.height; y++) {
         this.addTile(x, y, 'tile_unset')
       }
     }
 
     for(var ix = 0; ix < 4; ix++) {
-      for(var y = Math.floor(boardSize.height / 2) - 1; y <= Math.floor(boardSize.height / 2); y++) {
-        this.setTile([0, 1, boardSize.width-2, boardSize.width-1][ix], y, 'tile_path')
+      for(var y = Math.floor(this.size.height / 2) - 1; y <= Math.floor(this.size.height / 2); y++) {
+        this.setTile([0, 1, this.size.width-2, this.size.width-1][ix], y, 'tile_path')
       }
     }
   }
 
   tileIndex (x, y) {
-    return x + y * boardSize.width
+    return x + y * this.size.width
   }
 
   getTile (x, y) {
