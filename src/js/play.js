@@ -189,7 +189,7 @@ class Hero {
   }
 
   /**
-  * Sets the hero position, this is a board position, not pixel coordinates.
+  * Sets the hero position, (x, y) is a board position, not pixel coordinates.
   */
   setPosition (x, y) {
     this.heroSprite.x = x * tileSize.width + 20 - 6
