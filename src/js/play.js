@@ -342,7 +342,18 @@ class CardGenerator {
   * create creates a card.
   */
   create(slot) {
-    return new BoardCard(this.phaserState, slot)
+    return this.generateBoardCard(slot)
+  }
+
+  generateBoardCard (slot) {
+    var maxOffsets = { x: 1, y: 1 }
+    var tiles = [
+      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 0}, maxOffsets),
+      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 0}, maxOffsets),
+      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 1}, maxOffsets),
+      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 1}, maxOffsets)
+    ]
+    return new BoardCard(this.phaserState, slot, tiles)
   }
 }
 
@@ -485,16 +496,10 @@ class Card {
 }
 
 class BoardCard extends Card {
-  constructor (state, slot) {
+  constructor (state, slot, boardCardTiles) {
     super(slot)
-    var maxOffsets = { x: 1, y: 1 }
-    this.tiles = [
-      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 0}, maxOffsets),
-      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 0}, maxOffsets),
-      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 1}, maxOffsets),
-      new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 1}, maxOffsets)
-    ]
-    this.addToSprites(this.tiles.map((tile) => tile.tile))
+    this.tiles = boardCardTiles
+    this.addToSprites(boardCardTiles.map((tile) => tile.tile))
   }
 
   getUseOverlay (state, position) {
