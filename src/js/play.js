@@ -126,6 +126,19 @@ class Board {
       }
     )
   }
+
+  findPassableTiles (currentTile) {
+    return [
+      { x: -1, y: 0},
+      { x: 1, y: 0},
+      { x: 0, y: -1},
+      { x: 0, y: 1}
+    ].map(
+      (offset) => add(offset, currentTile)
+    ).filter(
+      (position) => this.inside(position.x, position.y) && this.getTile(position.x, position.y).isPassable()
+    )
+  }
 }
 
 class Tile extends Phaser.Sprite {
@@ -185,16 +198,7 @@ class Party {
   }
 
   findNextTarget() {
-    var targets = [
-      { x: -1, y: 0},
-      { x: 1, y: 0},
-      { x: 0, y: -1},
-      { x: 0, y: 1}
-    ].map(
-      (offset) => add(offset, this.target)
-    ).filter(
-      (position) => this.phaserState.board.inside(position.x, position.y) && this.phaserState.board.getTile(position.x, position.y).isPassable()
-    )
+    var targets = this.phaserState.board.findPassableTiles(this.target)
     if (targets.length > 0) {
       var index = random(0, targets.length - 1)
       this.target = targets[index]
