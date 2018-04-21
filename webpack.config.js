@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
   "mode": "production",
-  "entry": "./src/init.js",
+  "entry": "./src/js/init.js",
 
   "output": {
     filename: "[name].[chunkhash].js",
