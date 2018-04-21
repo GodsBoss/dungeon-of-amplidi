@@ -1,0 +1,11 @@
+{
+  "name": "dungeon-of-amplidi",
+  "version": "0.0.1",
+  "description": "God Game / Dungeon Crawler",
+  "scripts": {},
+  "keywords": [
+    "game"
+  ],
+  "author": "Timo Reitz",
+  "license": "MIT"
+}
