@@ -7,6 +7,7 @@ class Play extends Phaser.State {
 
   update() {
     this.party.update()
+    this.cards.update()
   }
 }
 
@@ -211,6 +212,12 @@ class Cards {
       this.slots[i] = new CardSlot(state, i)
     }
   }
+
+  update() {
+    this.slots.forEach(
+      (slot) => slot.update()
+    )
+  }
 }
 
 class CardSlot {
@@ -220,6 +227,10 @@ class CardSlot {
     this.bg = state.add.sprite(x, 224, "ui_card")
     this.inputFrame = state.add.sprite(x, 224, "ui_invisiblecard")
     this.inputFrame.inputEnabled = true
+  }
+
+  update () {
+    this.inputFrame.bringToTop()
   }
 }
 
