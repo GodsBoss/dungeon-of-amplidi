@@ -84,7 +84,7 @@ class Tile extends Phaser.Sprite {
 class Party {
   constructor (state, maxHeroes) {
     this.heroes = []
-    this.position = { x: 0, y: 0 }
+    this.position = { x: 0.5, y: boardSize.height / 2 }
     this.heroes[0] = new Hero(state, 0, "knight")
     this.heroes[1] = new Hero(state, 1, "cleric")
     this.heroes[2] = new Hero(state, 2, "none")
