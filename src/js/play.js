@@ -381,6 +381,9 @@ class CardGenerator {
   * create creates a card.
   */
   create(slot) {
+    if (random(0, 5) == 0) {
+      return new GoblinCard(this.phaserState, slot)
+    }
     return this.generateBoardCard(slot)
   }
 
@@ -589,6 +592,29 @@ class BoardCardTile {
     var x = slot.x() + tileSize.width * (offset.x - maxOffset.x / 2) + 20
     var y = slot.y() + tileSize.height * (offset.y - maxOffset.y / 2) + 24
     this.tile = state.add.sprite(x, y, "tile_" + type)
+  }
+}
+
+class GoblinCard extends Card {
+  constructor (state, slot) {
+    super(slot)
+    this.cardSymbol = state.add.sprite(slot.x(), slot.y(), "ui_card_goblin")
+    this.addToSprites([this.cardSymbol])
+  }
+
+  getUseOverlay (state, position) {
+    console.log(state)
+    const offsets = new Offsets()
+    offsets.add(
+      position.x,
+      position.y,
+      state.board.inside(position.x, position.y) && state.board.getTile(position.x, position.y).isPassable()
+    )
+    return offsets
+  }
+
+  use (state, position) {
+    super.use(state, position)
   }
 }
 
