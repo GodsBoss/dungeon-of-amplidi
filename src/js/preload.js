@@ -10,7 +10,6 @@ class Preload extends Phaser.State {
       "tile_path",
       "tile_rock",
       "tile_unset",
-      "ui_card",
       "ui_card_goblin",
       "ui_card_pickaxe",
       "ui_heroframe",
@@ -34,6 +33,7 @@ class Preload extends Phaser.State {
     );
 
     [
+      "ui_card",
       "ui_cardfx"
     ].forEach(
       (key) => this.load.spritesheet(key, "gfx/" + key + ".png", 50, 60)

@@ -350,6 +350,7 @@ class CardSlot {
 
   setCard(card) {
     this.card = card
+    this.bg.frame = 1
   }
 
   update () {
@@ -425,6 +426,7 @@ class CardSlot {
     this.setState("inactive")
     this.card.destroy()
     this.card = null
+    this.bg.frame = 0
   }
 }
 
