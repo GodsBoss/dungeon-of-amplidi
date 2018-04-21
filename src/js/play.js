@@ -184,7 +184,7 @@ class Life {
   constructor(maximum, regeneration = 0) {
     this.maximum = maximum
     this.current = maximum
-    this.regeneration = this.regeneration
+    this.regeneration = regeneration
   }
 
   tick () {
