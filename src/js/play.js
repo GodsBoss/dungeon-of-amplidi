@@ -8,6 +8,7 @@ class Play extends Phaser.State {
   update() {
     this.party.update()
     this.cards.update()
+    this.board.overlay(this.cards.getUseOverlay(this, this.board.fromPointer(this.input)))
   }
 }
 
@@ -31,10 +32,18 @@ class Board {
     this.tilesGroup = state.add.group()
     this.tilesGroup.classType = Tile
     this.tiles = []
+    this.overlays = []
 
     for(var x = 0; x < this.size.width; x++) {
       for (var y = 0; y < this.size.height; y++) {
         this.addTile(x, y, 'tile_unset')
+      }
+    }
+
+    for (var x = 0; x < this.size.width; x++) {
+      for (var y = 0; y < this.size.height; y++) {
+        var overlayPos = this.position(x, y)
+        this.overlays[this.tileIndex(x, y)] = state.add.sprite(overlayPos.x, overlayPos.y, 'tile_overlay')
       }
     }
 
@@ -59,13 +68,60 @@ class Board {
   }
 
   addTile(x, y, key) {
-    this.tiles[this.tileIndex(x, y)] = this.tilesGroup.create(x * tileSize.width + 20, y * tileSize.height + 20, key)
+    const pos = this.position(x, y)
+    this.tiles[this.tileIndex(x, y)] = this.tilesGroup.create(pos.x, pos.y, key)
+  }
+
+  inside (x, y) {
+    return x >= 0 && y >= 0 && x < this.size.width && y < this.size.height
+  }
+
+  position (x, y) {
+    return { x: x * tileSize.width + 20, y: y * tileSize.height + 20 }
+  }
+
+  /**
+  * fromPointer takes a pointer and returns the corresponding grid position on the board. May return out-of-bounds position.
+  */
+  fromPointer (ptr) {
+    return {
+      x: Math.floor((ptr.x - 20) / tileSize.width),
+      y: Math.floor((ptr.y - 20) / tileSize.height)
+    }
+  }
+
+  getOverlay (x, y) {
+    return this.overlays[this.tileIndex(x, y)]
+  }
+
+  overlay (offsets) {
+    this.overlays.forEach(
+      (overlay) => overlay.frame = 0
+    )
+    offsets.offsets.forEach(
+      (offset) => {
+        if (this.inside(offset.x, offset.y)) {
+          var overlay = this.getOverlay(offset.x, offset.y)
+          if (!offset.valid) {
+            overlay.frame = 3
+          } else if (offsets.areAllValid()) {
+            overlay.frame = 1
+          } else {
+            overlay.frame = 2
+          }
+        }
+      }
+    )
   }
 }
 
 class Tile extends Phaser.Sprite {
   constructor(game, x, y, key, frame) {
     super(game, x, y, key, frame)
+  }
+
+  isUnset () {
+    return this.key == "tile_unset"
   }
 }
 
@@ -212,6 +268,7 @@ class Cards {
       this.slots[i] = new CardSlot(state, this, i)
       this.slots[i].setCard(new BoardCard(state, this.slots[i]))
     }
+    this.activeSlot = null
   }
 
   update() {
@@ -224,6 +281,21 @@ class Cards {
     this.slots.forEach(
       (slot) => slot.setState("inactive")
     )
+  }
+
+  activate (slot) {
+    this.activeSlot = slot
+  }
+
+  deactivate (slot) {
+    this.activeSlot = null
+  }
+
+  getUseOverlay (state, position) {
+    if (!this.activeSlot) {
+      return new Offsets()
+    }
+    return this.activeSlot.getUseOverlay(state, position)
   }
 }
 
@@ -271,6 +343,7 @@ class CardSlot {
     }
     if (this.isActive()) {
       this.setState("inactive")
+      this.cards.deactivate()
     } else if (this.isHovered()) {
       this.cards.deselectAll()
       this.setState("active")
@@ -280,6 +353,9 @@ class CardSlot {
   setState (state) {
     this.state = state
     this.effect.animations.play(state)
+    if (state == "active") {
+      this.cards.activate(this)
+    }
   }
 
   isInactive() {
@@ -301,6 +377,10 @@ class CardSlot {
   y () {
     return 224
   }
+
+  getUseOverlay (state, position) {
+    return this.card.getUseOverlay(state, position)
+  }
 }
 
 class Card {
@@ -320,18 +400,57 @@ class BoardCard extends Card {
       new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 1}, maxOffsets)
     ]
   }
+
+  getUseOverlay (state, position) {
+    var offsets = new Offsets()
+    this.tiles.forEach(
+      (tile) => {
+        const boardPosition = add(tile.offset, position)
+        offsets.add(
+          boardPosition.x,
+          boardPosition.y,
+          state.board.inside(boardPosition.x, boardPosition.y) && state.board.getTile(boardPosition.x, boardPosition.y).isUnset()
+        )
+      }
+    )
+    return offsets
+  }
 }
 
 class BoardCardTile {
-  constructor (state, slot, type, tileOffset, maxOffset) {
-    var x = slot.x() + tileSize.width * (tileOffset.x - maxOffset.x / 2) + 20
-    var y = slot.y() + tileSize.height * (tileOffset.y - maxOffset.y / 2) + 24
+  constructor (state, slot, type, offset, maxOffset) {
+    this.offset = offset
+    var x = slot.x() + tileSize.width * (offset.x - maxOffset.x / 2) + 20
+    var y = slot.y() + tileSize.height * (offset.y - maxOffset.y / 2) + 24
     this.tile = state.add.sprite(x, y, "tile_" + type)
+  }
+}
+
+class Offsets {
+  constructor () {
+    this.offsets = []
+    this.valid = true
+  }
+
+  add (x, y, valid) {
+    this.offsets.push({ x, y, valid })
+    this.valid = this.valid && valid
+  }
+
+  areAllValid() {
+    return this.valid
   }
 }
 
 function distance(p1, p2) {
   return length(diff(p1, p2))
+}
+
+function add(p1, p2) {
+  return {
+    x: p1.x + p2.x,
+    y: p1.y + p2.y
+  }
 }
 
 function diff(p1, p2) {
