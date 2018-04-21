@@ -218,6 +218,12 @@ class Cards {
       (slot) => slot.update()
     )
   }
+
+  deselectAll() {
+    this.slots.forEach(
+      (slot) => slot.setState("inactive")
+    )
+  }
 }
 
 class CardSlot {
@@ -261,6 +267,7 @@ class CardSlot {
     if (this.isActive()) {
       this.setState("inactive")
     } else if (this.isHovered()) {
+      this.cards.deselectAll()
       this.setState("active")
     }
   }
