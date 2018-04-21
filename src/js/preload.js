@@ -9,6 +9,7 @@ class Preload extends Phaser.State {
       "sprite_dungeonheart",
       "tile_path",
       "tile_rock",
+      "tile_unset",
       "ui_card",
       "ui_heroframe",
       "ui_hero_dead",
