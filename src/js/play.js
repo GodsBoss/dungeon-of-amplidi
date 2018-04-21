@@ -283,6 +283,10 @@ class Cards {
     this.slots.forEach(
       (slot) => slot.update()
     )
+    var emptySlots = this.emptySlots()
+    emptySlots.forEach(
+      (slot) => slot.refill(slotRefillFactor * (0.5 + 0.5/emptySlots.length))
+    )
   }
 
   deselectAll() {
@@ -317,12 +321,17 @@ class Cards {
   }
 
   emptySlots() {
-    return this.slots.reduce(
-      (acc, curr) => +curr.isEmpty() + acc,
-      0
+    return this.slots.filter(
+      (slot) => slot.isEmpty()
     )
   }
+
+  generateCard (slot) {
+    slot.setCard(this.generator.create(slot))
+  }
 }
+
+const slotRefillFactor = 0.0025
 
 class CardGenerator {
   constructor (phaserState) {
@@ -353,6 +362,14 @@ class CardSlot {
     this.inputFrame.events.onInputOver.add((obj, ptr) => this.over(obj, ptr))
     this.inputFrame.events.onInputOut.add((obj, ptr) => this.out(obj, ptr))
     this.inputFrame.events.onInputUp.add((obj, ptr, stillOver) => this.up(obj, ptr, stillOver))
+    this.nextCardWaitTime = 0
+  }
+
+  refill (amount) {
+    this.nextCardWaitTime -= amount
+    if (this.nextCardWaitTime <= 0) {
+      this.cards.generateCard(this)
+    }
   }
 
   setCard(card) {
@@ -438,6 +455,7 @@ class CardSlot {
     this.card.destroy()
     this.card = null
     this.bg.frame = 0
+    this.nextCardWaitTime = 1
   }
 }
 
