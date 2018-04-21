@@ -180,17 +180,13 @@ class Party {
   }
 
   findNextTarget() {
-    var currGridPosition = {
-      x: Math.round(this.position.x),
-      y: Math.round(this.position.y)
-    }
     var targets = [
       { x: -1, y: 0},
       { x: 1, y: 0},
       { x: 0, y: -1},
       { x: 0, y: 1}
     ].map(
-      (offset) => add(offset, currGridPosition)
+      (offset) => add(offset, this.target)
     ).filter(
       (position) => this.phaserState.board.inside(position.x, position.y) && this.phaserState.board.getTile(position.x, position.y).isPassable()
     )
