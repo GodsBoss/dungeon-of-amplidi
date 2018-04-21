@@ -16,7 +16,7 @@
     "url": "git+https://github.com/GodsBoss/dungeon-of-amplidi.git"
   },
   "dependencies": {
-    "phaser": "^3.6.0",
+    "phaser": "^2.6.2",
     "webpack-cli": "^2.0.14"
   },
   "devDependencies": {
