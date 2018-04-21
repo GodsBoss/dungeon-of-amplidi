@@ -13,7 +13,8 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin(
       {
-        "title": "Dungeon of Amplidi"
+        "title": "Dungeon of Amplidi",
+        "template": path.resolve(__dirname, 'src/index.html')
       }
     )
   ]
