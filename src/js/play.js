@@ -4,6 +4,7 @@ class Play extends Phaser.State {
     this.party = new Party(this, maxHeroes)
     this.cards = new Cards(this)
     this.heart = new DungeonHeart(this)
+    this.monsters = []
   }
 
   update() {
@@ -603,7 +604,6 @@ class GoblinCard extends Card {
   }
 
   getUseOverlay (state, position) {
-    console.log(state)
     const offsets = new Offsets()
     offsets.add(
       position.x,
