@@ -217,6 +217,12 @@ class Cards {
   }
 }
 
+class Card {
+  constructor (index) {
+    this.index = index
+  }
+}
+
 function distance(p1, p2) {
   return length(diff(p1, p2))
 }
