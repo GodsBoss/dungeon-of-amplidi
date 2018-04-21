@@ -1,20 +1,13 @@
 class Play extends Phaser.State {
   create() {
     this.board = new Board(this, boardSize)
+    this.party = new Party(this, maxHeroes)
 
     for(var i = 0; i < maxCards; i++) {
       this.add.sprite(
         tileSize.width * boardSize.width * i / maxCards + 20,
         224,
         "ui_card"
-      )
-    }
-
-    for(var i = 0; i < maxHeroes; i++) {
-      this.add.sprite(
-        316,
-        tileSize.height * boardSize.height * i / maxHeroes + 20,
-        "ui_heroframe"
       )
     }
   }
@@ -77,5 +70,87 @@ class Board {
 class Tile extends Phaser.Sprite {
   constructor(game, x, y, key, frame) {
     super(game, x, y, key, frame)
+  }
+}
+
+class Party {
+  constructor (state, maxHeroes) {
+    this.heroes = []
+    this.position = { x: 0, y: 0 }
+    this.heroes[0] = new Hero(state, 0, "knight")
+    this.heroes[1] = new Hero(state, 1, "cleric")
+    this.heroes[2] = new Hero(state, 2, "none")
+    this.heroes[3] = new Hero(state, 3, "none")
+  }
+}
+
+class Hero {
+  constructor (state, index, type) {
+    this.life = heroTemplates[type].life()
+    this.index = index
+    var pos = this.portraitPosition()
+    state.add.sprite(pos.x, pos.y, "ui_heroframe")
+    this.portrait = state.add.sprite(pos.x, pos.y, "ui_hero_" + type)
+    state.add.sprite(358, pos.y, "ui_herolife")
+    this.heroLifeValue = state.add.sprite(359, pos.y + 1, "ui_herolifevalue")
+    this.renderHeroLifeValue()
+  }
+
+  portraitPosition () {
+    return {
+      x: 316,
+      y: tileSize.height * boardSize.height * this.index / maxHeroes + 20
+    }
+  }
+
+  renderHeroLifeValue () {
+    this.heroLifeValue.width = 34 * this.life.percentage()
+  }
+}
+
+var heroTemplates = {
+  "none": {
+    life: () => {
+      var life = new Life(1)
+      life.lose(1)
+      return life
+    }
+  },
+  "cleric": {
+    life: () => new Life(100, 0.1)
+  },
+  "knight": {
+    life: () => new Life(200, 0.2)
+  },
+}
+
+class Life {
+  constructor(maximum, regeneration = 0) {
+    this.maximum = maximum
+    this.current = maximum
+    this.regeneration = this.regeneration
+  }
+
+  tick () {
+    this.gain(this.regeneration)
+  }
+
+  /**
+  * percentage returns the current life amount as a value from 0.0 (none) to 1.0 (full).
+  */
+  percentage() {
+    return this.current / this.maximum
+  }
+
+  lose(amount) {
+    this.current = Math.max(0, this.current - amount)
+  }
+
+  gain(amount) {
+    this.current = Math.min(this.maximum, this.current + amount)
+  }
+
+  none() {
+    return this.current == 0
   }
 }
