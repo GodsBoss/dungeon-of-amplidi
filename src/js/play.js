@@ -89,6 +89,9 @@ class Party {
     this.heroes[1] = new Hero(state, 1, "cleric")
     this.heroes[2] = new Hero(state, 2, "none")
     this.heroes[3] = new Hero(state, 3, "none")
+    this.heroes.forEach(
+      (hero) => hero.setPosition(this.position.x, this.position.y)
+    )
   }
 }
 
@@ -102,6 +105,7 @@ class Hero {
     state.add.sprite(358, pos.y, "ui_herolife")
     this.heroLifeValue = state.add.sprite(359, pos.y + 1, "ui_herolifevalue")
     this.renderHeroLifeValue()
+    this.heroSprite = state.add.sprite(0, 0, "sprite_hero_" + type)
   }
 
   portraitPosition () {
@@ -113,6 +117,14 @@ class Hero {
 
   renderHeroLifeValue () {
     this.heroLifeValue.width = 34 * this.life.percentage()
+  }
+
+  /**
+  * Sets the hero position, this is a board position, not pixel coordinates.
+  */
+  setPosition (x, y) {
+    this.heroSprite.x = x * tileSize.width + 20 - 6
+    this.heroSprite.y = y * tileSize.height + 20 - 6
   }
 }
 
