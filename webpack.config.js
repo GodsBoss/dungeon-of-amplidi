@@ -1,4 +1,5 @@
 const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
@@ -34,6 +35,16 @@ const config = {
         "title": "Dungeon of Amplidi",
         "template": path.resolve(__dirname, 'src/index.html')
       }
+    ),
+    new CopyWebpackPlugin(
+      [
+        {
+          from: "node_modules/phaser/build/phaser.min.js"
+        },
+        {
+          from: "node_modules/phaser/build/pixi.min.js"
+        }
+      ]
     )
   ]
 }
