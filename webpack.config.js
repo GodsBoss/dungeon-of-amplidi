@@ -43,6 +43,9 @@ const config = {
         },
         {
           from: "node_modules/phaser/build/pixi.min.js"
+        },
+        {
+          from: "gfx/*.png"
         }
       ]
     )
