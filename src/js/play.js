@@ -131,6 +131,10 @@ class Tile extends Phaser.Sprite {
   isUnset () {
     return this.key == "tile_unset"
   }
+
+  isPassable() {
+    return this.key == "tile_path"
+  }
 }
 
 /**
@@ -145,7 +149,8 @@ class Party {
   constructor (state, maxHeroes) {
     this.phaserState = state
     this.heroes = []
-    this.position = { x: 1, y: boardSize.height / 2 }
+    this.position = { x: 1, y: Math.floor(boardSize.height / 2) }
+    this.target = this.position
     this.heroes[0] = new Hero(state, this, 0, "knight")
     this.heroes[1] = new Hero(state, this, 1, "cleric")
     this.heroes[2] = new Hero(state, this, 2, "none")
@@ -159,10 +164,44 @@ class Party {
     this.heroes.forEach(
       (hero) => hero.update()
     )
+    if (distance(this.position, this.target) <= partySpeed) {
+      this.findNextTarget()
+    } else {
+      const d = diff(this.position, this.target)
+      const l = length(d)
+      this.position = add(
+        this.position,
+        {
+          x: partySpeed * d.x / l,
+          y: partySpeed * d.y / l
+        }
+      )
+    }
+  }
+
+  findNextTarget() {
+    var currGridPosition = {
+      x: Math.round(this.position.x),
+      y: Math.round(this.position.y)
+    }
+    var targets = [
+      { x: -1, y: 0},
+      { x: 1, y: 0},
+      { x: 0, y: -1},
+      { x: 0, y: 1}
+    ].map(
+      (offset) => add(offset, currGridPosition)
+    ).filter(
+      (position) => this.phaserState.board.inside(position.x, position.y) && this.phaserState.board.getTile(position.x, position.y).isPassable()
+    )
+    if (targets.length > 0) {
+      var index = random(0, targets.length - 1)
+      this.target = targets[index]
+    }
   }
 }
 
-const partySpeed = 0.05
+const partySpeed = 0.01
 
 class Hero {
   constructor (state, party, index, type) {
