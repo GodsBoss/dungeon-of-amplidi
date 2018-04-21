@@ -217,6 +217,12 @@ class Cards {
   }
 }
 
+class CardSlot {
+  constructor (index) {
+    this.index = index
+  }
+}
+
 class Card {
   constructor (index) {
     this.index = index
