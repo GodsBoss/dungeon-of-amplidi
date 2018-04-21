@@ -4,4 +4,7 @@ build:
 clean:
 	npm run-script clean
 
-.PHONY: build clean
+serve:
+	npm run-script serve
+
+.PHONY: build clean serve
