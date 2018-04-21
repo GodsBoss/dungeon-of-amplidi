@@ -437,7 +437,14 @@ class BoardCard extends Card {
     return offsets
   }
 
-  use (state, position) {}
+  use (state, position) {
+    this.tiles.forEach(
+      (tile) => {
+        var tilePosition = add(position, tile.offset)
+        state.board.setTile(tilePosition.x, tilePosition.y, tile.tile.key)
+      }
+    )
+  }
 }
 
 class BoardCardTile {
