@@ -1,5 +1,5 @@
 const path = require('path')
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
   "mode": "production",
