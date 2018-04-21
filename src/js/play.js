@@ -12,7 +12,9 @@ class Play extends Phaser.State {
     }
   }
 
-  update() {}
+  update() {
+    this.party.update()
+  }
 }
 
 export default { State: Play }
@@ -93,6 +95,12 @@ class Party {
       (hero) => hero.setPosition(this.position.x, this.position.y)
     )
   }
+
+  update() {
+    this.heroes.forEach(
+      (hero) => hero.move(this.position)
+    )
+  }
 }
 
 class Hero {
@@ -106,6 +114,8 @@ class Hero {
     this.heroLifeValue = state.add.sprite(359, pos.y + 1, "ui_herolifevalue")
     this.renderHeroLifeValue()
     this.heroSprite = state.add.sprite(0, 0, "sprite_hero_" + type)
+    this.position = { x: 0, y: 0 }
+    this.speed = 0.1
   }
 
   portraitPosition () {
@@ -125,8 +135,27 @@ class Hero {
   setPosition (x, y) {
     this.heroSprite.x = x * tileSize.width + 20 - 6
     this.heroSprite.y = y * tileSize.height + 20 - 6
+    this.position = { x, y }
+  }
+
+  move (target) {
+    if(distance(this.position, target) > maximumHeroPartyDistance) {
+      const d = diff(this.position, target)
+      const l = length(d)
+      this.setPosition(
+        this.position.x + this.speed * d.x / l,
+        this.position.y + this.speed * d.y / l
+      )
+    } else {
+      this.setPosition(
+        this.position.x + (Math.random() - 0.5) * this.speed,
+        this.position.y + (Math.random() - 0.5) * this.speed
+      )
+    }
   }
 }
+
+const maximumHeroPartyDistance = 0.2
 
 var heroTemplates = {
   "none": {
@@ -173,4 +202,19 @@ class Life {
   none() {
     return this.current == 0
   }
+}
+
+function distance(p1, p2) {
+  return length({ x: p1.x - p2.x, y: p1.y - p2.y })
+}
+
+function diff(p1, p2) {
+  return {
+    x: p2.x - p1.x,
+    y: p2.y - p1.y
+  }
+}
+
+function length(p) {
+  return Math.sqrt(p.x*p.x, p.y*p.y)
 }
