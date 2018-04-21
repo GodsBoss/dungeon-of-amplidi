@@ -65,7 +65,7 @@ class Board {
   }
 
   addTile(x, y, key) {
-    this.tiles[this.tileIndex(x, y)] = this.tilesGroup.create(x * tileSize.width + 20, y * tileSize.width + 20, key)
+    this.tiles[this.tileIndex(x, y)] = this.tilesGroup.create(x * tileSize.width + 20, y * tileSize.height + 20, key)
   }
 }
 
