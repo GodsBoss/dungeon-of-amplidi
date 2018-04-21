@@ -346,13 +346,29 @@ class CardGenerator {
   }
 
   generateBoardCard (slot) {
-    var maxOffsets = { x: 1, y: 1 }
-    var tiles = [
-      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 0}, maxOffsets),
-      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 0}, maxOffsets),
-      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 1}, maxOffsets),
-      new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 1}, maxOffsets)
-    ]
+    var tileCount = random(2, 6)
+    var positions = []
+    for (var x = 0; x < 3; x++) {
+      for (var y = 0; y < 3; y++) {
+        positions.push({x, y})
+      }
+    }
+    shuffle(positions)
+    positions = positions.slice(0, tileCount)
+    var minima = positions.reduce(
+      (acc, curr) => ({ x: Math.min(acc.x, curr.x), y: Math.min(acc.y, curr.y)}),
+      { x: 2, y: 2}
+    )
+    positions = positions.map(
+      (position) => ({ x: position.x - minima.x, y: position.y - minima.y})
+    )
+    var maxima = positions.reduce(
+      (acc, curr) => ({ x: Math.max(acc.x, curr.x), y: Math.max(acc.y, curr.y)}),
+      { x: 0, y: 0}
+    )
+    var tiles = positions.map(
+      (position) => new BoardCardTile(this.phaserState, slot, Math.random() > 0.5 ? 'path' : 'rock', position, maxima)
+    )
     return new BoardCard(this.phaserState, slot, tiles)
   }
 }
@@ -573,4 +589,21 @@ function diff(p1, p2) {
 
 function length(p) {
   return Math.sqrt(p.x*p.x, p.y*p.y)
+}
+
+function shuffle(arr) {
+  if (arr.length < 2) {
+    return
+  }
+  for (let i=0; i<Math.pow(arr.length, 2); i++) {
+    var index1 = random(0, arr.length - 1)
+    var index2 = random(0, arr.length - 1)
+    var val1 = arr[index1]
+    arr[index1] = arr[index2]
+    arr[index2] = val1
+  }
+}
+
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
 }
