@@ -14,5 +14,8 @@
   },
   "dependencies": {
     "phaser": "^3.6.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.6.0"
   }
 }
