@@ -11,6 +11,7 @@ class Preload extends Phaser.State {
       "tile_rock",
       "tile_unset",
       "ui_card",
+      "ui_card_goblin",
       "ui_heroframe",
       "ui_herolife",
       "ui_herolifevalue",
