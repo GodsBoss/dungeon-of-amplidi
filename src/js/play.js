@@ -315,6 +315,13 @@ class Cards {
     }
     this.activeSlot.use(state, position)
   }
+
+  emptySlots() {
+    return this.slots.reduce(
+      (acc, curr) => +curr.isEmpty() + acc,
+      0
+    )
+  }
 }
 
 class CardGenerator {
@@ -351,6 +358,10 @@ class CardSlot {
   setCard(card) {
     this.card = card
     this.bg.frame = 1
+  }
+
+  isEmpty() {
+    return !this.card
   }
 
   update () {
