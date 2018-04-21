@@ -73,6 +73,14 @@ class Tile extends Phaser.Sprite {
   }
 }
 
+/**
+* Party is a group of heroes. A party itself has a position, while the heroes gravitate around it.
+* A party will seek (in order):
+* 1. Treasure
+* 2. Monsters
+* 3. Dungeon Heart guardian
+* 4. Dungeon Heart
+*/
 class Party {
   constructor (state, maxHeroes) {
     this.heroes = []
