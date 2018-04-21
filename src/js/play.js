@@ -3,6 +3,7 @@ class Play extends Phaser.State {
     this.board = new Board(this, boardSize, this.overlayClick.bind(this))
     this.party = new Party(this, maxHeroes)
     this.cards = new Cards(this)
+    this.heart = new DungeonHeart(this)
   }
 
   update() {
@@ -550,6 +551,15 @@ class BoardCardTile {
     var x = slot.x() + tileSize.width * (offset.x - maxOffset.x / 2) + 20
     var y = slot.y() + tileSize.height * (offset.y - maxOffset.y / 2) + 24
     this.tile = state.add.sprite(x, y, "tile_" + type)
+  }
+}
+
+class DungeonHeart {
+  constructor (phaserState) {
+    const gridX = phaserState.board.size.width-2
+    const gridY = Math.floor(phaserState.board.size.height / 2) - 1
+    const position = phaserState.board.position(gridX, gridY)
+    this.sprite = phaserState.add.sprite(position.x, position.y, 'sprite_dungeonheart')
   }
 }
 
