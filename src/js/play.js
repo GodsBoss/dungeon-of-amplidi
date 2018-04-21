@@ -343,7 +343,7 @@ class CardSlot {
   }
 
   over (obj, ptr) {
-    if (this.isInactive()) {
+    if (this.isInactive() && this.card) {
       this.setState("hover")
     }
   }
@@ -356,6 +356,9 @@ class CardSlot {
 
   up (obj, ptr, stillOver) {
     if (!stillOver) {
+      return
+    }
+    if (!this.card) {
       return
     }
     if (this.isActive()) {
@@ -406,16 +409,34 @@ class CardSlot {
   removeCard() {
     this.cards.deactivate()
     this.setState("inactive")
+    this.card.destroy()
+    this.card = null
   }
 }
 
 class Card {
   constructor (slot) {
     this.slot = slot
+    this.sprites = []
+  }
+
+  addToSprites (sprites) {
+    sprites.forEach(
+      (sprite) => this.sprites.push(sprite)
+    )
   }
 
   use (state, position) {
     this.slot.removeCard()
+  }
+
+  destroy() {
+    this.sprites.forEach(
+      (sprite) => {
+        console.log(sprite)
+        sprite.destroy()
+      }
+    )
   }
 }
 
@@ -429,6 +450,7 @@ class BoardCard extends Card {
       new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 0, y: 1}, maxOffsets),
       new BoardCardTile(state, slot, Math.random() > 0.5 ? 'path' : 'rock', { x: 1, y: 1}, maxOffsets)
     ]
+    this.addToSprites(this.tiles.map((tile) => tile.tile))
   }
 
   getUseOverlay (state, position) {
