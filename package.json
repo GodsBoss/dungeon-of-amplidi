@@ -7,5 +7,8 @@
     "game"
   ],
   "author": "Timo Reitz",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "phaser": "^3.6.0"
+  }
 }
