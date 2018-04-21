@@ -8,7 +8,6 @@ class Preload extends Phaser.State {
       "screen_play",
       "sprite_dungeonheart",
       "tile_path",
-      "tile_overlay",
       "tile_rock",
       "tile_unset",
       "ui_card",
@@ -28,7 +27,8 @@ class Preload extends Phaser.State {
 
     [
       "sprite_hero_cleric",
-      "sprite_hero_knight"
+      "sprite_hero_knight",
+      "tile_overlay"
     ].forEach(
       (key) => this.load.spritesheet(key, "gfx/" + key + ".png", 12, 12)
     );
