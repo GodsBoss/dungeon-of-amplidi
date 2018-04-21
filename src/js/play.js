@@ -343,16 +343,16 @@ class CardSlot {
     this.phaserState = state
     this.index = index
     this.bg = state.add.sprite(this.x(), this.y(), "ui_card")
-    this.inputFrame = state.add.sprite(this.x(), this.y(), "ui_invisiblecard")
-    this.inputFrame.inputEnabled = true
-    this.inputFrame.events.onInputOver.add((obj, ptr) => this.over(obj, ptr))
-    this.inputFrame.events.onInputOut.add((obj, ptr) => this.out(obj, ptr))
-    this.inputFrame.events.onInputUp.add((obj, ptr, stillOver) => this.up(obj, ptr, stillOver))
     this.state = "inactive"
     this.effect = state.add.sprite(this.x(), this.y(), "ui_cardfx")
     this.effect.animations.add("inactive", [0], 1, false)
     this.effect.animations.add("hover", [1,2,3], 10, true)
     this.effect.animations.add("active", [4,5,6], 10, true)
+    this.inputFrame = this.effect
+    this.inputFrame.inputEnabled = true
+    this.inputFrame.events.onInputOver.add((obj, ptr) => this.over(obj, ptr))
+    this.inputFrame.events.onInputOut.add((obj, ptr) => this.out(obj, ptr))
+    this.inputFrame.events.onInputUp.add((obj, ptr, stillOver) => this.up(obj, ptr, stillOver))
   }
 
   setCard(card) {

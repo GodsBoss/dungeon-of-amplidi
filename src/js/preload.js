@@ -18,8 +18,7 @@ class Preload extends Phaser.State {
       "ui_hero_cleric",
       "ui_hero_dead",
       "ui_hero_knight",
-      "ui_hero_none",
-      "ui_invisiblecard"
+      "ui_hero_none"
     ].forEach(
       (key) => this.load.image(key, "gfx/" + key + ".png")
     );
