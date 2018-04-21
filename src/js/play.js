@@ -2,7 +2,7 @@ class Play extends Phaser.State {
   create() {
     this.board = new Board(this, boardSize)
     this.party = new Party(this, maxHeroes)
-    this.cards = new Cards(this, maxCards)
+    this.cards = new Cards(this)
   }
 
   update() {
@@ -205,7 +205,7 @@ class Life {
 }
 
 class Cards {
-  constructor (state, maxCards) {
+  constructor (state) {
     this.slots = []
     for(var i = 0; i < maxCards; i++) {
       this.slots[i] = new CardSlot(state, i)
