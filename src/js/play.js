@@ -206,20 +206,21 @@ class Life {
 
 class Cards {
   constructor (state, maxCards) {
-    this.cardFrames = []
+    this.slots = []
     for(var i = 0; i < maxCards; i++) {
-      this.cardFrames[i] = state.add.sprite(
-        tileSize.width * boardSize.width * i / maxCards + 20,
-        224,
-        "ui_card"
-      )
+      this.slots[i] = new CardSlot(state, i)
     }
   }
 }
 
 class CardSlot {
-  constructor (index) {
+  constructor (state, index) {
     this.index = index
+    this.frame = state.add.sprite(
+      tileSize.width * boardSize.width * this.index / maxCards + 20,
+      224,
+      "ui_card"
+    )
   }
 }
 
