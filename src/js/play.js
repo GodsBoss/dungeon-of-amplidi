@@ -216,11 +216,10 @@ class Cards {
 class CardSlot {
   constructor (state, index) {
     this.index = index
-    this.frame = state.add.sprite(
-      tileSize.width * boardSize.width * this.index / maxCards + 20,
-      224,
-      "ui_card"
-    )
+    var x = tileSize.width * boardSize.width * this.index / maxCards + 20
+    this.bg = state.add.sprite(x, 224, "ui_card")
+    this.inputFrame = state.add.sprite(x, 224, "ui_invisiblecard")
+    this.inputFrame.inputEnabled = true
   }
 }
 
