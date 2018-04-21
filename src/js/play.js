@@ -87,10 +87,10 @@ class Party {
   constructor (state, maxHeroes) {
     this.heroes = []
     this.position = { x: 1, y: boardSize.height / 2 }
-    this.heroes[0] = new Hero(state, 0, "knight")
-    this.heroes[1] = new Hero(state, 1, "cleric")
-    this.heroes[2] = new Hero(state, 2, "none")
-    this.heroes[3] = new Hero(state, 3, "none")
+    this.heroes[0] = new Hero(state, this, 0, "knight")
+    this.heroes[1] = new Hero(state, this, 1, "cleric")
+    this.heroes[2] = new Hero(state, this, 2, "none")
+    this.heroes[3] = new Hero(state, this, 3, "none")
     this.heroes.forEach(
       (hero) => hero.setPosition(this.position.x, this.position.y)
     )
@@ -104,7 +104,7 @@ class Party {
 }
 
 class Hero {
-  constructor (state, index, type) {
+  constructor (state, party, index, type) {
     this.life = heroTemplates[type].life()
     this.index = index
     var pos = this.portraitPosition()
