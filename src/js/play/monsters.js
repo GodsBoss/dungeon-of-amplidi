@@ -25,6 +25,13 @@ class Monster {
   }
 
   update() {}
+
+  /**
+  * experience is the amount of experience the party receives if the monster is killed.
+  */
+  experience() {
+    return 0
+  }
 }
 
 class DungeonHeart extends Monster {
@@ -65,6 +72,10 @@ class Goblin extends Monster {
 
   speed () {
     return 0.025
+  }
+
+  experience () {
+    return 25
   }
 }
 
