@@ -13,6 +13,11 @@ function shuffle(arr) {
   }
 }
 
+function randomItem(arr) {
+  return arr[random.int(0, arr.length - 1)]
+}
+
 export default {
+  randomItem,
   shuffle
 }
