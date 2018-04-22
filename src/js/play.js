@@ -12,7 +12,6 @@ class Play extends Phaser.State {
     this.board = board.New(this, board.size, this.overlayClick.bind(this))
     this.party = new hero.Party(this, hero.maxHeroes)
     this.cards = cards.New(this)
-    this.heart = new monsters.DungeonHeart(this)
     this.monsterGroups = new monsters.Groups()
     this.monsterGroups.add(
       "goblin",
@@ -21,6 +20,14 @@ class Play extends Phaser.State {
         (state, group, position) => new monsters.Goblin(state, group, position)
       )
     )
+    this.monsterGroups.add(
+      "heart",
+      new monsters.Group(
+        this,
+        (state, group, position) => new monsters.DungeonHeart(state, group, position)
+      )
+    )
+    this.monsterGroups.createMonster('heart', { x: board.size.width-2, y: Math.floor(board.size.height / 2) - 1 })
   }
 
   update() {

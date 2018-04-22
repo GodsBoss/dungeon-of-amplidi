@@ -22,14 +22,15 @@ class Monster {
   setPosition (position) {
     this.currentPosition = position
   }
+
+  update() {}
 }
 
-class DungeonHeart {
-  constructor (phaserState) {
-    const gridX = phaserState.board.size.width-2
-    const gridY = Math.floor(phaserState.board.size.height / 2) - 1
-    const position = phaserState.board.position(gridX, gridY)
-    this.sprite = phaserState.add.sprite(position.x, position.y, 'sprite_dungeonheart')
+class DungeonHeart extends Monster {
+  constructor (state, group, position) {
+    super(group, position)
+    const coord = state.board.position(position.x, position.y)
+    this.sprite = state.add.sprite(coord.x, coord.y, 'sprite_dungeonheart')
   }
 }
 
