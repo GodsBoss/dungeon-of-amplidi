@@ -1,3 +1,4 @@
+import array from './array'
 import random from './random'
 
 class Play extends Phaser.State {
@@ -406,7 +407,7 @@ class CardGenerator {
         positions.push({x, y})
       }
     }
-    shuffle(positions)
+    array.shuffle(positions)
     positions = positions.slice(0, tileCount)
     var minima = positions.reduce(
       (acc, curr) => ({ x: Math.min(acc.x, curr.x), y: Math.min(acc.y, curr.y)}),
@@ -703,17 +704,4 @@ function diff(p1, p2) {
 
 function length(p) {
   return Math.sqrt(p.x*p.x, p.y*p.y)
-}
-
-function shuffle(arr) {
-  if (arr.length < 2) {
-    return
-  }
-  for (let i=0; i<Math.pow(arr.length, 2); i++) {
-    var index1 = random.int(0, arr.length - 1)
-    var index2 = random.int(0, arr.length - 1)
-    var val1 = arr[index1]
-    arr[index1] = arr[index2]
-    arr[index2] = val1
-  }
 }
