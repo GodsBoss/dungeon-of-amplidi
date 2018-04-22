@@ -17,6 +17,7 @@ class PursueTarget extends Behaviour {
   * @param entity is what uses the behaviour.
   *        Expose speed method which returns the entity's speed.
   *        Expose position method with returns the current position.
+  *        Expose setPosition method with sets a new position.
   * @param nextTarget finds a target. It takes the entity as first parameter and the current target as the second.
   *        For the initial target it is called with null as the second parameter.
   */
@@ -34,8 +35,14 @@ class PursueTarget extends Behaviour {
       this.target = this.nextTarget(this.entity, this.target)
     } else {
       const d = v.diff(position, this.target)
-      this.x += speed * d.x / distance
-      this.y += speed * d.y / distance
+      this.entity.setPosition(
+        v.add(
+          {
+            x: speed * d.x / distance,
+            y: speed * d.y / distance
+          }
+        )
+      )
     }
   }
 }
