@@ -24,7 +24,7 @@ function diff(p1, p2) {
 }
 
 function length(p) {
-  return Math.sqrt(p.x*p.x, p.y*p.y)
+  return Math.sqrt(p.x*p.x + p.y*p.y)
 }
 
 export default {
