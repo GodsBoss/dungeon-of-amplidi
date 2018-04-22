@@ -3,6 +3,7 @@ import random from './random'
 import v from './vector'
 
 import board from './play/board'
+import life from './play/life'
 
 class Play extends Phaser.State {
   create() {
@@ -153,48 +154,17 @@ const maximumHeroPartyDistance = 0.2
 var heroTemplates = {
   "none": {
     life: () => {
-      var life = new Life(1)
-      life.lose(1)
-      return life
+      var l = life.New(1)
+      l.lose(1)
+      return l
     }
   },
   "cleric": {
-    life: () => new Life(100, 0.1)
+    life: () => life.New(100, 0.1)
   },
   "knight": {
-    life: () => new Life(200, 0.2)
+    life: () => life.New(200, 0.2)
   },
-}
-
-class Life {
-  constructor(maximum, regeneration = 0) {
-    this.maximum = maximum
-    this.current = maximum
-    this.regeneration = regeneration
-  }
-
-  tick () {
-    this.gain(this.regeneration)
-  }
-
-  /**
-  * percentage returns the current life amount as a value from 0.0 (none) to 1.0 (full).
-  */
-  percentage() {
-    return this.current / this.maximum
-  }
-
-  lose(amount) {
-    this.current = Math.max(0, this.current - amount)
-  }
-
-  gain(amount) {
-    this.current = Math.min(this.maximum, this.current + amount)
-  }
-
-  none() {
-    return this.current == 0
-  }
 }
 
 class Cards {
