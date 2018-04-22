@@ -44,6 +44,8 @@ class Preload extends Phaser.State {
     ].forEach(
       (key) => this.load.spritesheet(key, "gfx/" + key + ".png", 50, 60)
     )
+
+    this.load.spritesheet("ui_start_button", "gfx/ui_start_button.png", 60, 60)
   }
 
   create() {
