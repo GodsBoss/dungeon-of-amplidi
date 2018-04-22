@@ -102,6 +102,10 @@ class Group {
       (monster) => monster.update()
     )
   }
+
+  empty () {
+    return this.monsters.length == 0
+  }
 }
 
 class Groups {
@@ -137,6 +141,10 @@ class Groups {
       (list, group) => list.concat(group.monsters),
       []
     )
+  }
+
+  empty (type) {
+    return this.getByName(type).empty()
   }
 }
 
