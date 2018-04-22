@@ -42,6 +42,8 @@ export default {
   add,
   diff,
   distance,
+  equal,
+  floor,
   length,
   mul
 }
