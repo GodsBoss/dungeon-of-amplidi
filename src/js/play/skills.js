@@ -11,11 +11,15 @@ class Skill {
 
   /**
   * Attempts to use the skill.
+  *
+  * @return boolean
   */
   use (origin, state) {
     if (this.isReady() && this._use(origin, state)) {
       this.cooldown = 1
+      return true
     }
+    return false
   }
 
   /**
