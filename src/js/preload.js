@@ -26,6 +26,7 @@ class Preload extends Phaser.State {
     [
       "sprite_hero_cleric",
       "sprite_hero_knight",
+      "sprite_hero_none",
       "sprite_monster_goblin",
       "tile_overlay"
     ].forEach(
