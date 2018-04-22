@@ -39,7 +39,6 @@ class Goblin extends Monster {
     super(group, position)
     this.setBehaviour(
       new behaviour.PursueTarget(
-        this,
         behaviour.randomTarget(
           (entity, currentTarget) => state.board.findPassableTiles(currentTarget ? currentTarget : entity.position())
         )
@@ -51,7 +50,7 @@ class Goblin extends Monster {
   }
 
   update () {
-    this.behaviour.behave()
+    this.behaviour.behave(this)
     const coords = this.state.board.position(this.position().x, this.position().y)
     this.sprite.x = coords.x
     this.sprite.y = coords.y

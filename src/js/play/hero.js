@@ -28,7 +28,6 @@ class Party {
       (hero) => hero.setPosition(this.currentPosition.x, this.currentPosition.y)
     )
     this.behaviour = new behaviour.PursueTarget(
-      this,
       behaviour.randomTarget(
         (entity, currentTarget) => entity.phaserState.board.findPassableTiles(currentTarget ? currentTarget : entity.position())
       )
@@ -39,7 +38,7 @@ class Party {
     this.heroes.forEach(
       (hero) => hero.update()
     )
-    this.behaviour.behave()
+    this.behaviour.behave(this)
   }
 
   position () {

@@ -2,9 +2,15 @@ import random from '../random'
 import v from '../vector'
 
 class Behaviour {
-  constructor (entity) {
-    this.entity = entity
-  }
+  constructor () {}
+
+  /**
+  * @param entity is what uses the behaviour.
+  *        Expose speed method which returns the entity's speed.
+  *        Expose position method with returns the current position.
+  *        Expose setPosition method with sets a new position.
+  */
+  behave(entity) {}
 }
 
 /**
@@ -14,33 +20,28 @@ class PursueTarget extends Behaviour {
   /**
   * Constructs the behaviour.
   *
-  * @param entity is what uses the behaviour.
-  *        Expose speed method which returns the entity's speed.
-  *        Expose position method with returns the current position.
-  *        Expose setPosition method with sets a new position.
   * @param nextTarget finds a target. It takes the entity as first parameter and the current target as the second.
   *        For the initial target it is called with null as the second parameter.
   */
-  constructor (entity, nextTarget) {
-    super(entity)
+  constructor (nextTarget) {
+    super()
     this.nextTarget = nextTarget
-    this.target = nextTarget(entity, null)
   }
 
-  behave() {
+  behave(entity) {
     if (!this.target) {
-      this.target = this.nextTarget(this.entity, this.target)
+      this.target = this.nextTarget(entity, this.target)
       return
     }
-    const speed = this.entity.speed()
-    const position = this.entity.position()
+    const speed = entity.speed()
+    const position = entity.position()
     const distance = v.distance(position, this.target)
     if (distance < speed) {
-      this.target = this.nextTarget(this.entity, this.target)
+      this.target = this.nextTarget(entity, this.target)
     } else {
       const d = v.diff(position, this.target)
-      this.entity.setPosition(
-        v.add(this.entity.position(), v.mul(d, speed/distance))
+      entity.setPosition(
+        v.add(entity.position(), v.mul(d, speed/distance))
       )
     }
   }
