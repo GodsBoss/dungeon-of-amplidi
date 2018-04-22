@@ -37,9 +37,16 @@ class Monster {
 class DungeonHeart extends Monster {
   constructor (state, group, position) {
     super(group, position)
+    this.state = state
     const coord = state.board.position(position.x, position.y)
     this.sprite = state.add.sprite(coord.x, coord.y, 'sprite_dungeonheart')
-    this.life = life.New(1000, 0.1)
+    this.life = life.New(1, 0.1)
+  }
+
+  update () {
+    if (this.life.none()) {
+      this.state.state.start("gameover", true, false, true)
+    }
   }
 }
 
