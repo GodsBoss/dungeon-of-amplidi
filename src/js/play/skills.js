@@ -13,7 +13,7 @@ class Skill {
   * Attempts to use the skill.
   */
   use (origin, state) {
-    if (isReady() && _use(origin, state)) {
+    if (this.isReady() && this._use(origin, state)) {
       this.cooldown = 1
     }
   }
