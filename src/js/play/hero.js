@@ -22,7 +22,7 @@ class Party {
     this.heroes = []
     this.currentPosition = { x: 1, y: Math.floor(board.size.height / 2) }
     this.heroes[0] = new Hero(state, this, 0, "knight")
-    this.heroes[1] = new Hero(state, this, 1, "cleric")
+    this.heroes[1] = new Hero(state, this, 1, "none")
     this.heroes[2] = new Hero(state, this, 2, "none")
     this.heroes[3] = new Hero(state, this, 3, "none")
     this.heroes.forEach(
