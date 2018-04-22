@@ -123,6 +123,10 @@ class Tile extends Phaser.Sprite {
   isPassable() {
     return this.key == "tile_path"
   }
+
+  isRock() {
+    return this.key == "tile_rock"
+  }
 }
 
 export default {
