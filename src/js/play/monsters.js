@@ -12,7 +12,7 @@ class DungeonHeart {
 
 class Goblin extends Phaser.Sprite {
   update () {
-    if (v.distance(this, this.state.board.position(this.target.x, this.target.y)) < goblinSpeed) {
+    if (v.distance(this, this.state.board.position(this.target.x, this.target.y)) < this.speed()) {
       var possibleTargets = this.state.board.findPassableTiles(this.target)
       if (possibleTargets.length > 0) {
         this.setTarget(possibleTargets[random.int(0, possibleTargets.length - 1)])
@@ -20,8 +20,8 @@ class Goblin extends Phaser.Sprite {
     } else {
       const d = v.diff(this, this.state.board.position(this.target.x, this.target.y))
       const l = v.length(d)
-      this.x += goblinSpeed * d.x / l
-      this.y += goblinSpeed * d.y / l
+      this.x += this.speed() * d.x / l
+      this.y += this.speed() * d.y / l
     }
   }
 
@@ -32,9 +32,11 @@ class Goblin extends Phaser.Sprite {
   setState (state) {
     this.state = state
   }
-}
 
-const goblinSpeed = 0.025
+  speed () {
+    return 0.025
+  }
+}
 
 export default {
   DungeonHeart,
