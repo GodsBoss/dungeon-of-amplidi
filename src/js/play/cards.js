@@ -81,7 +81,7 @@ class Generator {
   */
   create(slot) {
     if (random.int(0, 5) == 0) {
-      return new GoblinCard(this.phaserState, slot)
+      return new MonsterCard(this.phaserState, "goblin", slot, (tile) => tile.isPassable())
     }
     return this.generateBoardCard(slot)
   }
@@ -294,11 +294,13 @@ class BoardCardTile {
   }
 }
 
-class GoblinCard extends Card {
-  constructor (state, slot) {
+class MonsterCard extends Card {
+  constructor (state, type, slot, isValidTile) {
     super(slot)
-    this.cardSymbol = state.add.sprite(slot.x(), slot.y(), "ui_card_goblin")
+    this.type = type
+    this.cardSymbol = state.add.sprite(slot.x(), slot.y(), "ui_card_" + type)
     this.addToSprites([this.cardSymbol])
+    this.isValidTile = isValidTile
   }
 
   getUseOverlay (state, position) {
@@ -306,16 +308,13 @@ class GoblinCard extends Card {
     offsets.add(
       position.x,
       position.y,
-      state.board.inside(position.x, position.y) && state.board.getTile(position.x, position.y).isPassable()
+      state.board.inside(position.x, position.y) && this.isValidTile(state.board.getTile(position.x, position.y))
     )
     return offsets
   }
 
   use (state, position) {
-    const pos = state.board.position(position.x, position.y)
-    const goblin = state.monsterGroups['goblins'].create(pos.x, pos.y, "sprite_monster_goblin")
-    goblin.setTarget(position)
-    goblin.setState(state)
+    state.monsterGroups.createMonster(this.type, position)
     super.use(state, position)
   }
 }
@@ -337,5 +336,6 @@ class Offsets {
 }
 
 export default {
-  New: (phaserState) => new Cards(phaserState)
+  New: (phaserState) => new Cards(phaserState),
+  MonsterCard
 }

@@ -28,6 +28,10 @@ class PursueTarget extends Behaviour {
   }
 
   behave() {
+    if (!this.target) {
+      this.target = this.nextTarget(this.entity, this.target)
+      return
+    }
     const speed = this.entity.speed()
     const position = this.entity.position()
     const distance = v.distance(position, this.target)
