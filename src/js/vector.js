@@ -9,6 +9,13 @@ function add(p1, p2) {
   }
 }
 
+function mul(p, f) {
+  return {
+    x: p.x * f,
+    y: p.y * f
+  }
+}
+
 function diff(p1, p2) {
   return {
     x: p2.x - p1.x,
@@ -24,5 +31,6 @@ export default {
   add,
   diff,
   distance,
-  length
+  length,
+  mul
 }
