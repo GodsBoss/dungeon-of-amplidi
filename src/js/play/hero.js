@@ -72,7 +72,7 @@ class Hero {
     this.renderHeroLifeValue()
     this.heroSprite = state.add.sprite(0, 0, "sprite_hero_" + type)
     this.heroSprite.animations.add("move", [0, 1], 5, true)
-    this.heroSprite.animations.add("skill", [2, 3, 4, 5], 5, true)
+    this.heroSprite.animations.add("skill", [2, 3, 4, 5], 10, true)
     this.heroSprite.animations.add("die", [6, 7], 5, true)
     this.heroSprite.animations.play("move")
     this.currentPosition = { x: 0, y: 0 }
