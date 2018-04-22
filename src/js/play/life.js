@@ -27,6 +27,10 @@ class Life {
   none() {
     return this.current == 0
   }
+
+  missing () {
+    return this.maximum - this.current
+  }
 }
 
 export default {
