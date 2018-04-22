@@ -1,6 +1,7 @@
 import behaviour from './behaviour'
 import board from './board'
 import life from './life'
+import skills from './skills'
 import random from '../random'
 import v from '../vector'
 
@@ -62,8 +63,10 @@ class Party {
 
 class Hero {
   constructor (state, party, index, type) {
+    this.phaserState = state
     this.party = party
     this.life = heroTemplates[type].life()
+    this.skill = heroTemplates[type].skill()
     this.index = index
     var pos = this.portraitPosition()
     state.add.sprite(pos.x, pos.y, "ui_heroframe")
@@ -78,6 +81,7 @@ class Hero {
     this.heroSprite.animations.play("move")
     this.position = { x: 0, y: 0 }
     this.speed = 0.1
+    this.state = "move"
   }
 
   portraitPosition () {
@@ -102,7 +106,19 @@ class Hero {
 
   update () {
     this.life.tick()
-    this.move(this.party.position())
+    this.skill.update()
+    this.skill.use(this, this.phaserState)
+    if (this.skill.inUse() && !this.isPerformingSkill()) {
+      this.state = "skill"
+      this.heroSprite.animations.play("skill")
+    }
+    if (!this.skill.inUse() && this.isPerformingSkill()) {
+      this.state = "move"
+      this.heroSprite.animations.play("move")
+    }
+    if (this.isMoving()) {
+      this.move(this.party.position())
+    }
     this.renderHeroLifeValue()
   }
 
@@ -129,6 +145,22 @@ class Hero {
   distanceToParty() {
     return v.distance(this.position, this.party.position())
   }
+
+  isMoving() {
+    return this.state == "move"
+  }
+
+  isPerformingSkill() {
+    return this.state == "skill"
+  }
+
+  isDying() {
+    return this.state == "dying"
+  }
+
+  isDead() {
+    return this.state == "dead"
+  }
 }
 
 const randomHeroMovementDampingFactor = 0.25
@@ -140,13 +172,16 @@ var heroTemplates = {
       var l = life.New(1)
       l.lose(1)
       return l
-    }
+    },
+    skill: () => new skills.None()
   },
   "cleric": {
-    life: () => life.New(100, 0.1)
+    life: () => life.New(100, 0.1),
+    skill: () => new skills.Heal()
   },
   "knight": {
-    life: () => life.New(200, 0.2)
+    life: () => life.New(200, 0.2),
+    skill: () => new skills.Attack()
   },
 }
 

@@ -50,16 +50,38 @@ class Skill {
   }
 }
 
+/**
+* Heal heals a member of the party. Targets the most injured party member, percentage-wise.
+*/
 class Heal extends Skill {
   constructor () {
-    super(0.02)
+    super(0.01)
     this.duration = 0.2
+  }
+
+  _use (origin, state) {
+    const possibleTargets = state.party.livingHeroes().filter(
+      (hero) => hero.life.missing() > this.healing() || hero.life.percentage() <= 0.5
+    )
+    if (possibleTargets.length == 0) {
+      return false
+    }
+    const target = possibleTargets.sort((hero1, hero2) => hero1.life.percentage() - hero2.life.percentage())[0]
+    target.life.gain(this.healing())
+    return true
+  }
+
+  /**
+  * healing returns the amount of life healed. Depends on the level.
+  */
+  healing () {
+    return this.level * 20
   }
 }
 
 class Attack extends Skill {
   constructor () {
-    super(0.04)
+    super(0.02)
     this.duration = 0.15
   }
 }
