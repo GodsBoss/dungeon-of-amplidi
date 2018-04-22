@@ -61,7 +61,6 @@ function randomTarget(possibleTargets) {
 }
 
 export default {
-  None,
   PursueTarget,
   randomTarget
 }
