@@ -28,6 +28,7 @@ class Preload extends Phaser.State {
       "sprite_hero_knight",
       "sprite_hero_none",
       "sprite_monster_goblin",
+      "sprite_monster_guardian",
       "tile_overlay"
     ].forEach(
       (key) => this.load.spritesheet(key, "gfx/" + key + ".png", 12, 12)
