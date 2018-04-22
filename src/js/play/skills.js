@@ -1,3 +1,6 @@
+import array from '../array'
+import v from '../vector'
+
 class Skill {
   /**
   * @param refill defines how fast a cooldown passes.
@@ -83,6 +86,28 @@ class Attack extends Skill {
   constructor () {
     super(0.02)
     this.duration = 0.15
+  }
+
+  _use (origin, state) {
+    const possibleTargets = state.monsterGroups.allMonsters().filter(
+      (monster) => monster.life && (!monster.life.none()) && v.distance(origin.position(), monster.position()) < this.range()
+    )
+    if (possibleTargets.length == 0) {
+      return false
+    }
+    array.randomItem(possibleTargets).life.lose(this.strength())
+    return true
+  }
+
+  strength() {
+    return this.level * 20
+  }
+
+  /**
+  * range is the range in grid points, not pixels.
+  */
+  range() {
+    return 0.1
   }
 }
 

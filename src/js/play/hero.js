@@ -79,7 +79,7 @@ class Hero {
     this.heroSprite.animations.add("skill", [2, 3, 4, 5], 5, true)
     this.heroSprite.animations.add("die", [6, 7], 5, true)
     this.heroSprite.animations.play("move")
-    this.position = { x: 0, y: 0 }
+    this.currentPosition = { x: 0, y: 0 }
     this.speed = 0.1
     this.state = "move"
   }
@@ -95,13 +95,17 @@ class Hero {
     this.heroLifeValue.width = 34 * this.life.percentage()
   }
 
+  position () {
+    return this.currentPosition
+  }
+
   /**
   * Sets the hero position, (x, y) is a board position, not pixel coordinates.
   */
   setPosition (x, y) {
     this.heroSprite.x = x * board.tileSize.width + 20 - 6
     this.heroSprite.y = y * board.tileSize.height + 20 - 6
-    this.position = { x, y }
+    this.currentPosition = { x, y }
   }
 
   update () {
@@ -124,16 +128,16 @@ class Hero {
 
   move (target) {
     if(this.distanceToParty() > maximumHeroPartyDistance) {
-      const d = v.diff(this.position, target)
+      const d = v.diff(this.position(), target)
       const l = v.length(d)
       this.setPosition(
-        this.position.x + this.speed * d.x / l,
-        this.position.y + this.speed * d.y / l
+        this.position().x + this.speed * d.x / l,
+        this.position().y + this.speed * d.y / l
       )
     } else {
       this.setPosition(
-        this.position.x + (Math.random() - 0.5) * this.speed * randomHeroMovementDampingFactor,
-        this.position.y + (Math.random() - 0.5) * this.speed * randomHeroMovementDampingFactor
+        this.position().x + (Math.random() - 0.5) * this.speed * randomHeroMovementDampingFactor,
+        this.position().y + (Math.random() - 0.5) * this.speed * randomHeroMovementDampingFactor
       )
     }
   }
@@ -143,7 +147,7 @@ class Hero {
   }
 
   distanceToParty() {
-    return v.distance(this.position, this.party.position())
+    return v.distance(this.position(), this.party.position())
   }
 
   isMoving() {

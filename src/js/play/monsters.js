@@ -53,6 +53,10 @@ class Goblin extends Monster {
   }
 
   update () {
+    if (this.life.none()) {
+      this.sprite.frame = 8
+      return
+    }
     this.behaviour.behave(this)
     const coords = this.state.board.position(this.position().x, this.position().y)
     this.sprite.x = coords.x
@@ -111,6 +115,16 @@ class Groups {
   update () {
     this.list.forEach(
       (group) => group.update()
+    )
+  }
+
+  /**
+  * allMonsters returns all monsters of all groups.
+  */
+  allMonsters () {
+    return this.list.reduce(
+      (list, group) => list.concat(group.monsters),
+      []
     )
   }
 }
