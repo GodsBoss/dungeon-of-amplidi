@@ -8,8 +8,10 @@ class Preload extends Phaser.State {
     this.load.setPreloadSprite(bar);
 
     [
+      "screen_defeat",
       "screen_levelselect",
       "screen_play",
+      "screen_victory",
       "sprite_dungeonheart",
       "tile_path",
       "tile_rock",
