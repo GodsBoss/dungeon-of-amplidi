@@ -55,7 +55,7 @@ function randomTarget(possibleTargets) {
   return (entity, oldTarget) => {
     const targets = possibleTargets(entity, oldTarget)
     if (targets.length > 0) {
-      return target[random.int(0, targets.length - 1)]
+      return targets[random.int(0, targets.length - 1)]
     }
   }
 }
