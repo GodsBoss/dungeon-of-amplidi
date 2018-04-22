@@ -1,3 +1,5 @@
+import random from './random'
+
 class Play extends Phaser.State {
   create() {
     this.board = new Board(this, boardSize, this.overlayClick.bind(this))
@@ -200,7 +202,7 @@ class Party {
   findNextTarget() {
     var targets = this.phaserState.board.findPassableTiles(this.target)
     if (targets.length > 0) {
-      var index = random(0, targets.length - 1)
+      var index = random.int(0, targets.length - 1)
       this.target = targets[index]
     }
   }
@@ -390,14 +392,14 @@ class CardGenerator {
   * create creates a card.
   */
   create(slot) {
-    if (random(0, 5) == 0) {
+    if (random.int(0, 5) == 0) {
       return new GoblinCard(this.phaserState, slot)
     }
     return this.generateBoardCard(slot)
   }
 
   generateBoardCard (slot) {
-    var tileCount = random(2, 6)
+    var tileCount = random.int(2, 6)
     var positions = []
     for (var x = 0; x < 3; x++) {
       for (var y = 0; y < 3; y++) {
@@ -644,7 +646,7 @@ class Goblin extends Phaser.Sprite {
     if (distance(this, this.state.board.position(this.target.x, this.target.y)) < goblinSpeed) {
       var possibleTargets = this.state.board.findPassableTiles(this.target)
       if (possibleTargets.length > 0) {
-        this.setTarget(possibleTargets[random(0, possibleTargets.length - 1)])
+        this.setTarget(possibleTargets[random.int(0, possibleTargets.length - 1)])
       }
     } else {
       const d = diff(this, this.state.board.position(this.target.x, this.target.y))
@@ -708,14 +710,10 @@ function shuffle(arr) {
     return
   }
   for (let i=0; i<Math.pow(arr.length, 2); i++) {
-    var index1 = random(0, arr.length - 1)
-    var index2 = random(0, arr.length - 1)
+    var index1 = random.int(0, arr.length - 1)
+    var index2 = random.int(0, arr.length - 1)
     var val1 = arr[index1]
     arr[index1] = arr[index2]
     arr[index2] = val1
   }
-}
-
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
 }
