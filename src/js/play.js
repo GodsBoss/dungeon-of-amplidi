@@ -5,7 +5,6 @@ import v from './vector'
 import board from './play/board'
 import cards from './play/cards'
 import hero from './play/hero'
-import life from './play/life'
 import monsters from './play/monsters'
 
 class Play extends Phaser.State {
