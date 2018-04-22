@@ -27,6 +27,13 @@ function length(p) {
   return Math.sqrt(p.x*p.x + p.y*p.y)
 }
 
+function floor(p) {
+  return {
+    x: Math.floor(p.x),
+    y: Math.floor(p.y)
+  }
+}
+
 export default {
   add,
   diff,
