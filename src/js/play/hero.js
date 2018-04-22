@@ -28,11 +28,7 @@ class Party {
     this.heroes.forEach(
       (hero) => hero.setPosition(this.currentPosition.x, this.currentPosition.y)
     )
-    this.behaviour = new behaviour.PursueTarget(
-      behaviour.randomTarget(
-        (entity, currentTarget) => entity.phaserState.board.findPassableTiles(currentTarget ? currentTarget : entity.position())
-      )
-    )
+    this.behaviour = new behaviour.PursueTarget(behaviour.partyTarget)
   }
 
   update() {

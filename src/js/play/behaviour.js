@@ -36,8 +36,10 @@ class PursueTarget extends Behaviour {
     const speed = entity.speed()
     const position = entity.position()
     const distance = v.distance(position, this.target)
-    if (distance < speed) {
+    if (distance == 0) {
       this.target = this.nextTarget(entity, this.target)
+    } else if (distance < speed) {
+      entity.setPosition(this.target)
     } else {
       const d = v.diff(position, this.target)
       entity.setPosition(
@@ -60,7 +62,58 @@ function randomTarget(possibleTargets) {
   }
 }
 
+function partyTarget(entity, _) {
+  const board = entity.phaserState.board
+  const potentialTargetLists = [
+    entity.phaserState.monsterGroups.getByName('goblin').monsters.filter(
+      (goblin) => !goblin.life.none()
+    ).map(
+      (goblin) => v.floor(goblin.position())
+    ),
+    entity.phaserState.monsterGroups.getByName('heart').monsters.map(
+      (heart) => v.floor(heart.position())
+    )
+  ]
+  let potentialTarget = null
+  let potentialTargetListIndex = 2
+  const start = v.floor(entity.position())
+  const posToField = (pos) => pos.x + '-' + pos.y
+  const visitedFields = {}
+  visitedFields[posToField(start)] = true
+  const list = [{ pos: start, next: null }]
+  while(list.length > 0) {
+    let current = list.shift()
+    potentialTargetLists.forEach(
+      (list, index) => {
+        if (index > potentialTargetListIndex) {
+          return
+        }
+        const match = list.find(
+          (item) => v.equal(item, current.pos)
+        )
+        if (match) {
+          potentialTargetListIndex = index
+          potentialTarget = current.next ? current.next : current.pos
+        }
+      }
+    )
+    if (potentialTargetListIndex == 0) {
+      return potentialTarget
+    }
+    board.findPassableTiles(current.pos).forEach(
+      (pos) => {
+        if (!visitedFields[posToField(pos)]) {
+          list.push({ pos: pos, next: (current.next ? current.next : pos) })
+          visitedFields[posToField(pos)] = true
+        }
+      }
+    )
+  }
+  return potentialTarget
+}
+
 export default {
+  partyTarget,
   PursueTarget,
   randomTarget
 }
