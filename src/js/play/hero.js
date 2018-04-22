@@ -101,7 +101,7 @@ class Hero {
   }
 
   move (target) {
-    if(v.distance(this.position, target) > maximumHeroPartyDistance) {
+    if(this.distanceToParty() > maximumHeroPartyDistance) {
       const d = v.diff(this.position, target)
       const l = v.length(d)
       this.setPosition(
@@ -118,6 +118,10 @@ class Hero {
 
   alive () {
     return !this.life.none()
+  }
+
+  distanceToParty() {
+    return v.distance(this.position, this.party.position())
   }
 }
 
