@@ -69,7 +69,7 @@ class Cards {
   }
 }
 
-const slotRefillFactor = 0.0025
+const slotRefillFactor = 0.0035
 
 class Generator {
   constructor (phaserState) {
