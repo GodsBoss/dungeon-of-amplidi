@@ -5,13 +5,14 @@ import v from './vector'
 import board from './play/board'
 import hero from './play/hero'
 import life from './play/life'
+import monsters from './play/monsters'
 
 class Play extends Phaser.State {
   create() {
     this.board = board.New(this, board.size, this.overlayClick.bind(this))
     this.party = new hero.Party(this, hero.maxHeroes)
     this.cards = new Cards(this)
-    this.heart = new DungeonHeart(this)
+    this.heart = new monsters.DungeonHeart(this)
     this.monsterGroups = {
       "goblins": this.add.group()
     }
@@ -346,15 +347,6 @@ class GoblinCard extends Card {
     goblin.setTarget(position)
     goblin.setState(state)
     super.use(state, position)
-  }
-}
-
-class DungeonHeart {
-  constructor (phaserState) {
-    const gridX = phaserState.board.size.width-2
-    const gridY = Math.floor(phaserState.board.size.height / 2) - 1
-    const position = phaserState.board.position(gridX, gridY)
-    this.sprite = phaserState.add.sprite(position.x, position.y, 'sprite_dungeonheart')
   }
 }
 
