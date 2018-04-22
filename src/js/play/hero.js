@@ -18,14 +18,14 @@ class Party {
   constructor (state, maxHeroes) {
     this.phaserState = state
     this.heroes = []
-    this.position = { x: 1, y: Math.floor(board.size.height / 2) }
-    this.target = this.position
+    this.currentPosition = { x: 1, y: Math.floor(board.size.height / 2) }
+    this.target = this.currentPosition
     this.heroes[0] = new Hero(state, this, 0, "knight")
     this.heroes[1] = new Hero(state, this, 1, "cleric")
     this.heroes[2] = new Hero(state, this, 2, "none")
     this.heroes[3] = new Hero(state, this, 3, "none")
     this.heroes.forEach(
-      (hero) => hero.setPosition(this.position.x, this.position.y)
+      (hero) => hero.setPosition(this.currentPosition.x, this.currentPosition.y)
     )
   }
 
@@ -33,17 +33,19 @@ class Party {
     this.heroes.forEach(
       (hero) => hero.update()
     )
-    if (v.distance(this.position, this.target) <= partySpeed) {
+    if (v.distance(this.currentPosition, this.target) <= this.speed()) {
       this.findNextTarget()
     } else {
-      const d = v.diff(this.position, this.target)
+      const d = v.diff(this.currentPosition, this.target)
       const l = v.length(d)
-      this.position = v.add(
-        this.position,
-        {
-          x: partySpeed * d.x / l,
-          y: partySpeed * d.y / l
-        }
+      this.setPosition(
+        v.add(
+          this.currentPosition,
+          {
+            x: this.speed() * d.x / l,
+            y: this.speed() * d.y / l
+          }
+        )
       )
     }
   }
@@ -55,9 +57,19 @@ class Party {
       this.target = targets[index]
     }
   }
-}
 
-const partySpeed = 0.01
+  position () {
+    return this.currentPosition
+  }
+
+  setPosition (position) {
+    this.currentPosition = position
+  }
+
+  speed () {
+    return 0.01
+  }
+}
 
 class Hero {
   constructor (state, party, index, type) {
@@ -97,7 +109,7 @@ class Hero {
 
   update () {
     this.life.tick()
-    this.move(this.party.position)
+    this.move(this.party.position())
     this.renderHeroLifeValue()
   }
 
