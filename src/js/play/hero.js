@@ -52,6 +52,12 @@ class Party {
   speed () {
     return 0.01
   }
+
+  livingHeroes () {
+    return this.heroes.filter(
+      (hero) => hero.alive()
+    )
+  }
 }
 
 class Hero {
