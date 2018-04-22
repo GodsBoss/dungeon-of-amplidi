@@ -84,8 +84,8 @@ class Heal extends Skill {
 
 class Attack extends Skill {
   constructor () {
-    super(0.02)
-    this.duration = 0.15
+    super(0.01)
+    this.duration = 0.35
   }
 
   _use (origin, state) {
