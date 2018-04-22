@@ -3,6 +3,10 @@
 */
 class Preload extends Phaser.State {
   preload() {
+    const bar = this.add.sprite(140, 100, 'preload', 1)
+    const border = this.add.sprite(140, 100, 'preload', 0)
+    this.load.setPreloadSprite(bar);
+
     [
       "screen_levelselect",
       "screen_play",

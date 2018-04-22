@@ -8,6 +8,8 @@ class Bootstrap extends Phaser.State {
     // Phaser.Canvas.setSmoothingEnabled(this.game.context, false); // For 2D canvas
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
     this.game.scale.setUserScale(2, 2);
+
+    this.load.spritesheet("preload", "gfx/ui_preloader.png", 120, 32)
   }
 
   create() {
