@@ -1,5 +1,6 @@
 import array from './array'
 import random from './random'
+import v from './vector'
 
 class Play extends Phaser.State {
   create() {
@@ -137,7 +138,7 @@ class Board {
       { x: 0, y: -1},
       { x: 0, y: 1}
     ].map(
-      (offset) => add(offset, currentTile)
+      (offset) => v.add(offset, currentTile)
     ).filter(
       (position) => this.inside(position.x, position.y) && this.getTile(position.x, position.y).isPassable()
     )
@@ -185,12 +186,12 @@ class Party {
     this.heroes.forEach(
       (hero) => hero.update()
     )
-    if (distance(this.position, this.target) <= partySpeed) {
+    if (v.distance(this.position, this.target) <= partySpeed) {
       this.findNextTarget()
     } else {
-      const d = diff(this.position, this.target)
-      const l = length(d)
-      this.position = add(
+      const d = v.diff(this.position, this.target)
+      const l = v.length(d)
+      this.position = v.add(
         this.position,
         {
           x: partySpeed * d.x / l,
@@ -254,9 +255,9 @@ class Hero {
   }
 
   move (target) {
-    if(distance(this.position, target) > maximumHeroPartyDistance) {
-      const d = diff(this.position, target)
-      const l = length(d)
+    if(v.distance(this.position, target) > maximumHeroPartyDistance) {
+      const d = v.diff(this.position, target)
+      const l = v.length(d)
       this.setPosition(
         this.position.x + this.speed * d.x / l,
         this.position.y + this.speed * d.y / l
@@ -576,7 +577,7 @@ class BoardCard extends Card {
     var offsets = new Offsets()
     this.tiles.forEach(
       (tile) => {
-        const boardPosition = add(tile.offset, position)
+        const boardPosition = v.add(tile.offset, position)
         offsets.add(
           boardPosition.x,
           boardPosition.y,
@@ -590,7 +591,7 @@ class BoardCard extends Card {
   use (state, position) {
     this.tiles.forEach(
       (tile) => {
-        var tilePosition = add(position, tile.offset)
+        var tilePosition = v.add(position, tile.offset)
         state.board.setTile(tilePosition.x, tilePosition.y, tile.tile.key)
       }
     )
@@ -644,14 +645,14 @@ class DungeonHeart {
 
 class Goblin extends Phaser.Sprite {
   update () {
-    if (distance(this, this.state.board.position(this.target.x, this.target.y)) < goblinSpeed) {
+    if (v.distance(this, this.state.board.position(this.target.x, this.target.y)) < goblinSpeed) {
       var possibleTargets = this.state.board.findPassableTiles(this.target)
       if (possibleTargets.length > 0) {
         this.setTarget(possibleTargets[random.int(0, possibleTargets.length - 1)])
       }
     } else {
-      const d = diff(this, this.state.board.position(this.target.x, this.target.y))
-      const l = length(d)
+      const d = v.diff(this, this.state.board.position(this.target.x, this.target.y))
+      const l = v.length(d)
       this.x += goblinSpeed * d.x / l
       this.y += goblinSpeed * d.y / l
     }
@@ -682,26 +683,4 @@ class Offsets {
   areAllValid() {
     return this.valid
   }
-}
-
-function distance(p1, p2) {
-  return length(diff(p1, p2))
-}
-
-function add(p1, p2) {
-  return {
-    x: p1.x + p2.x,
-    y: p1.y + p2.y
-  }
-}
-
-function diff(p1, p2) {
-  return {
-    x: p2.x - p1.x,
-    y: p2.y - p1.y
-  }
-}
-
-function length(p) {
-  return Math.sqrt(p.x*p.x, p.y*p.y)
 }
