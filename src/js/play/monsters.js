@@ -1,4 +1,5 @@
 import behaviour from './behaviour'
+import life from './life'
 import random from '../random'
 import v from '../vector'
 
@@ -47,6 +48,7 @@ class Goblin extends Monster {
     this.state = state
     const coords = this.state.board.position(position.x, position.y)
     this.sprite = state.add.sprite(coords.x, coords.y, 'sprite_monster_goblin')
+    this.life = life.New(20)
   }
 
   update () {
