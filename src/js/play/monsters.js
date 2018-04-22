@@ -32,6 +32,7 @@ class DungeonHeart extends Monster {
     super(group, position)
     const coord = state.board.position(position.x, position.y)
     this.sprite = state.add.sprite(coord.x, coord.y, 'sprite_dungeonheart')
+    this.life = life.New(1000, 0.1)
   }
 }
 
