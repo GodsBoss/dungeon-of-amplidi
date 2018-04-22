@@ -16,7 +16,7 @@ class Play extends Phaser.State {
     this.monsterGroups = {
       "goblins": this.add.group()
     }
-    this.monsterGroups['goblins'].classType = Goblin
+    this.monsterGroups['goblins'].classType = monsters.Goblin
     this.monsters = []
   }
 
@@ -349,32 +349,6 @@ class GoblinCard extends Card {
     super.use(state, position)
   }
 }
-
-class Goblin extends Phaser.Sprite {
-  update () {
-    if (v.distance(this, this.state.board.position(this.target.x, this.target.y)) < goblinSpeed) {
-      var possibleTargets = this.state.board.findPassableTiles(this.target)
-      if (possibleTargets.length > 0) {
-        this.setTarget(possibleTargets[random.int(0, possibleTargets.length - 1)])
-      }
-    } else {
-      const d = v.diff(this, this.state.board.position(this.target.x, this.target.y))
-      const l = v.length(d)
-      this.x += goblinSpeed * d.x / l
-      this.y += goblinSpeed * d.y / l
-    }
-  }
-
-  setTarget (target) {
-    this.target = target
-  }
-
-  setState (state) {
-    this.state = state
-  }
-}
-
-const goblinSpeed = 0.025
 
 class Offsets {
   constructor () {
