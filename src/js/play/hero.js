@@ -105,6 +105,7 @@ class Hero {
   }
 
   update () {
+    this.heroSprite.bringToTop()
     this.life.tick()
     this.skill.update()
     this.skill.use(this, this.phaserState)
