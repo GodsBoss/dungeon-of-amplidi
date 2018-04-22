@@ -33,6 +33,15 @@ class Goblin extends Phaser.Sprite {
     this.state = state
   }
 
+  position () {
+    return { x: this.x, y: this.y }
+  }
+
+  setPosition (position) {
+    this.x = position.x
+    this.y = position.y
+  }
+
   speed () {
     return 0.025
   }
