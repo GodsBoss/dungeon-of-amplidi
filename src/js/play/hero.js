@@ -111,6 +111,10 @@ class Hero {
       )
     }
   }
+
+  alive () {
+    return !this.life.none()
+  }
 }
 
 const maximumHeroPartyDistance = 0.2
