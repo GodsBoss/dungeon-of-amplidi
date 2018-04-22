@@ -110,8 +110,8 @@ class Hero {
       )
     } else {
       this.setPosition(
-        this.position.x + (Math.random() - 0.5) * this.speed,
-        this.position.y + (Math.random() - 0.5) * this.speed
+        this.position.x + (Math.random() - 0.5) * this.speed * randomHeroMovementDampingFactor,
+        this.position.y + (Math.random() - 0.5) * this.speed * randomHeroMovementDampingFactor
       )
     }
   }
@@ -125,6 +125,7 @@ class Hero {
   }
 }
 
+const randomHeroMovementDampingFactor = 0.25
 const maximumHeroPartyDistance = 0.2
 
 var heroTemplates = {
