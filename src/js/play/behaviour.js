@@ -37,6 +37,7 @@ class PursueTarget extends Behaviour {
       const d = v.diff(position, this.target)
       this.entity.setPosition(
         v.add(
+          this.entity.position(),
           {
             x: speed * d.x / distance,
             y: speed * d.y / distance
