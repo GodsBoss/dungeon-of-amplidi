@@ -63,11 +63,14 @@ class Goblin extends Monster {
     this.state = state
     const coords = this.state.board.position(position.x, position.y)
     this.sprite = state.add.sprite(coords.x, coords.y, 'sprite_monster_goblin')
+    this.sprite.animations.add("move", [0, 1], 10, true)
+    this.sprite.animations.play("move")
     this.life = life.New(20)
   }
 
   update () {
     if (this.life.none()) {
+      this.sprite.animations.stop()
       this.sprite.frame = 8
       return
     }
