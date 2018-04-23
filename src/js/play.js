@@ -9,6 +9,7 @@ import monsters from './play/monsters'
 
 class Play extends Phaser.State {
   create() {
+    this.add.sprite(0, 0, "screen_play")
     this.board = board.New(this, board.size, this.overlayClick.bind(this))
     this.party = new hero.Party(this, hero.maxHeroes)
     this.cards = cards.New(this)
