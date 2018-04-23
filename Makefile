@@ -1,4 +1,4 @@
-build:
+build: gfx
 	npm run-script build
 
 clean:
